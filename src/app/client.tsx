@@ -72,3 +72,5 @@ const ClientLayout: FC<PropsWithChildren<{}>> = ({ children }) => {
 
 export default ClientLayout
 export { config as wagmiConfig }
+
+

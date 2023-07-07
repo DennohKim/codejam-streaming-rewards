@@ -32,3 +32,4 @@ export const getAddressFromENS = async (name: string): Promise<string | null> =>
 
 	return client.getEnsAddress({ name: normalize(name) })
 }
+

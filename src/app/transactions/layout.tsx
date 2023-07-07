@@ -1,7 +1,5 @@
 import Link from 'next/link'
-import prisma from '@/db/prisma'
-import Session from '@/lib/session'
-import { cookies } from 'next/headers'
+
 import Navigation from '../Navigation'
 import { PropsWithChildren } from 'react'
 import { Bell, X, List, Cube } from '@/components/ui/icons'
@@ -14,15 +12,8 @@ const navigation = [
 	{ name: 'Transactions', href: '/transactions' },
 ]
 
-const DashboardLayout = async ({ children }: PropsWithChildren<{}>) => {
-	const session = await Session.fromCookies(cookies())
-	const user = await prisma.user.findUnique({
-		where: { id: session.userId },
-	})
-
-	if (!user) throw new Error('User not found')
-
-
+const TransactionLayout = async ({ children }: PropsWithChildren<{}>) => {
+	
 
 	return (
 		<div className="min-h-screen bg-neutral-100">
@@ -36,6 +27,7 @@ const DashboardLayout = async ({ children }: PropsWithChildren<{}>) => {
 										<Link href="/dashboard" className="flex-shrink-0">
 											<Cube className="h-8 w-8" color="white" weight="duotone" />
 										</Link>
+										
 									</div>
 									<div className="hidden md:block">
 										<div className="ml-4 flex items-center md:ml-6">
@@ -93,4 +85,4 @@ const DashboardLayout = async ({ children }: PropsWithChildren<{}>) => {
 	)
 }
 
-export default DashboardLayout
+export default TransactionLayout

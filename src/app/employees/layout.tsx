@@ -1,9 +1,11 @@
 import Link from 'next/link'
 import prisma from '@/db/prisma'
 import Session from '@/lib/session'
+
 import { cookies } from 'next/headers'
 import Navigation from '../Navigation'
 import { PropsWithChildren } from 'react'
+
 import { Bell, X, List, Cube } from '@/components/ui/icons'
 import ConnectWallet, { MobileProfileNav } from '@/components/ConnectWallet'
 import Collapsible, { CollapsibleContent, CollapsibleTrigger } from '@/components/ui/Collapsible'
@@ -14,14 +16,14 @@ const navigation = [
 	{ name: 'Transactions', href: '/transactions' },
 ]
 
-const DashboardLayout = async ({ children }: PropsWithChildren<{}>) => {
+const EmployeesLayout = async ({ children }: PropsWithChildren<{}>) => {
 	const session = await Session.fromCookies(cookies())
 	const user = await prisma.user.findUnique({
 		where: { id: session.userId },
+		//select: { teams: { select: { team: true } } },
 	})
 
 	if (!user) throw new Error('User not found')
-
 
 
 	return (
@@ -93,4 +95,4 @@ const DashboardLayout = async ({ children }: PropsWithChildren<{}>) => {
 	)
 }
 
-export default DashboardLayout
+export default EmployeesLayout

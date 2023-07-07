@@ -1,7 +1,7 @@
-import { tap } from './lib/utils'
 import Session from './lib/session'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { tap } from './lib/utils'
 
 export const middleware = async (request: NextRequest) => {
 	const path = request.nextUrl.pathname

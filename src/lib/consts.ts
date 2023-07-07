@@ -1,2 +1,2 @@
-export const APP_NAME = 'Armchair'
-export const COOKIE_NAME = 'armchair_session'
+export const APP_NAME = 'Streaming Payroll'
+export const COOKIE_NAME = 'streaming_payroll_session'

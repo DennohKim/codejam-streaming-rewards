@@ -11,7 +11,8 @@ model User {
     id           String   @id
     registeredAt DateTime @default(now())
 
-    teams TeamMember[]
+    teams    TeamMember[]
+    Employee Employee[]
 }
 
 enum TeamType {
@@ -43,4 +44,17 @@ model TeamMember {
     team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
 
     @@id([userId, teamId])
+}
+
+model Employee {
+    id           String   @id
+    registeredAt DateTime @default(now())
+
+    employeeName     String
+    address          String
+    paymentMethod    String
+    employmentSalary Int
+
+    User   User?   @relation(fields: [userId], references: [id])
+    userId String?
 }
