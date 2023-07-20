@@ -6,7 +6,7 @@ const Home = () => {
   const { data } = useContractCall('getEmployeeCount', [], true);
 
   // Convert the data to a number
-  const productLength = data ? Number(data.toString()) : 0;
+  const employeeLength = data ? Number(data.toString()) : 0;
 
   return (
     <div className='p-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4'>
@@ -29,7 +29,7 @@ const Home = () => {
           </svg>
         </CardHeader>
         <CardContent>
-          <div className='text-2xl font-bold'>{productLength}</div>
+          <div className='text-2xl font-bold'>{employeeLength}</div>
         </CardContent>
       </Card>
     </div>

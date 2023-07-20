@@ -1,19 +1,24 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
+
+// Version of Solidity compiler this program was written for
+pragma solidity >=0.7.0 <0.9.0;
+
 
 contract EmployeeDetails {
     struct Employee {
+        address payable owner;
         string name;
         address walletAddress;
         string paymentMethod;
         uint256 salary;
         uint256 dateCaptured;
     }
-    
-    mapping(address => Employee) public employees;
-    
+
+    mapping(address => Employee[]) private employeesByUser;
+    mapping(address => uint256) private userEmployeeCount;
+
     event EmployeeDetailsCaptured(
-        address indexed walletAddress,
+        address walletAddress,
         string name,
         string paymentMethod,
         uint256 salary,
@@ -21,21 +26,24 @@ contract EmployeeDetails {
     );
 
     event EmployeeDetailsUpdated(
-        address indexed walletAddress,
+        address walletAddress,
         string name,
         string paymentMethod,
         uint256 salary
     );
 
-    event EmployeeDetailsDeleted(address indexed walletAddress);
+    event EmployeeDetailsDeleted(address indexed owner, uint256 indexed index);
 
-    modifier employeeExists(address _walletAddress) {
-        require(employees[_walletAddress].walletAddress == _walletAddress, "Employee not found");
+    modifier onlyEmployeeOwner(uint256 _index) {
+        require(
+            employeesByUser[msg.sender][_index].owner == msg.sender,
+            "You are not authorized to perform this action"
+        );
         _;
     }
 
-    modifier employeeNotExists(address _walletAddress) {
-        require(employees[_walletAddress].walletAddress != _walletAddress, "Employee already exists");
+    modifier validEmployeeIndex(uint256 _index) {
+        require(_index < userEmployeeCount[msg.sender], "Invalid employee index");
         _;
     }
 
@@ -44,14 +52,20 @@ contract EmployeeDetails {
         address _walletAddress,
         string memory _paymentMethod,
         uint256 _salary
-    ) external employeeNotExists(_walletAddress) {
-        employees[_walletAddress] = Employee(
-            _name,
-            _walletAddress,
-            _paymentMethod,
-            _salary,
-            block.timestamp
+    ) external {
+        employeesByUser[msg.sender].push(
+            Employee(
+                payable(msg.sender),
+                _name,
+                _walletAddress,
+                _paymentMethod,
+                _salary,
+                block.timestamp
+            )
         );
+
+        // Increase the total count of employees for the user
+        userEmployeeCount[msg.sender]++;
 
         emit EmployeeDetailsCaptured(
             _walletAddress,
@@ -62,14 +76,40 @@ contract EmployeeDetails {
         );
     }
 
+    function getEmployeeDetails(uint256 _index)
+        external
+        view
+        validEmployeeIndex(_index)
+        returns (
+            address payable owner,
+            string memory name,
+            address walletAddress,
+            string memory paymentMethod,
+            uint256 salary,
+            uint256 dateCaptured
+        )
+    {
+        Employee memory employee = employeesByUser[msg.sender][_index];
+        return (
+            employee.owner,
+            employee.name,
+            employee.walletAddress,
+            employee.paymentMethod,
+            employee.salary,
+            employee.dateCaptured
+        );
+    }
+
     function updateEmployeeDetails(
+        uint256 _index,
         address _walletAddress,
         string memory _name,
         string memory _paymentMethod,
         uint256 _salary
-    ) external employeeExists(_walletAddress) {
-        Employee storage employee = employees[_walletAddress];
+    ) external validEmployeeIndex(_index) onlyEmployeeOwner(_index) {
+        Employee storage employee = employeesByUser[msg.sender][_index];
         employee.name = _name;
+        employee.walletAddress = _walletAddress;
         employee.paymentMethod = _paymentMethod;
         employee.salary = _salary;
 
@@ -81,26 +121,25 @@ contract EmployeeDetails {
         );
     }
 
-    function deleteEmployeeDetails(address _walletAddress) external employeeExists(_walletAddress) {
-        delete employees[_walletAddress];
+    function deleteEmployeeDetails(uint256 _index) external validEmployeeIndex(_index) onlyEmployeeOwner(_index) {
+        // Delete the employee from the array and move the last employee to the deleted position for gas optimization
+        uint256 lastIndex = userEmployeeCount[msg.sender] - 1;
+        Employee storage lastEmployee = employeesByUser[msg.sender][lastIndex];
+        Employee storage employeeToDelete = employeesByUser[msg.sender][_index];
+        employeeToDelete.name = lastEmployee.name;
+        employeeToDelete.walletAddress = lastEmployee.walletAddress;
+        employeeToDelete.paymentMethod = lastEmployee.paymentMethod;
+        employeeToDelete.salary = lastEmployee.salary;
+        employeeToDelete.dateCaptured = lastEmployee.dateCaptured;
+        employeeToDelete.owner = lastEmployee.owner;
 
-        emit EmployeeDetailsDeleted(_walletAddress);
+        // Decrease the total count of employees for the user
+        userEmployeeCount[msg.sender]--;
+
+        emit EmployeeDetailsDeleted(msg.sender, _index);
     }
 
-    function getEmployeeDetails(address _walletAddress) external view employeeExists(_walletAddress) returns (
-        string memory,
-        address,
-        string memory,
-        uint256,
-        uint256
-    ) {
-        Employee storage employee = employees[_walletAddress];
-        return (
-            employee.name,
-            employee.walletAddress,
-            employee.paymentMethod,
-            employee.salary,
-            employee.dateCaptured
-        );
+    function getNumberOfEmployees() external view returns (uint256) {
+        return userEmployeeCount[msg.sender];
     }
 }

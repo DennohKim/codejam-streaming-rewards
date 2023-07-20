@@ -1,5 +1,3 @@
-'use client';
-
 import { employeeContract, employeeDetailsAbi } from '@/constants/constants';
 // Import the wagmi hook to read from a smart contract
 import { useContractRead } from 'wagmi';

@@ -7,6 +7,7 @@ import "../styles/globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
 import { publicProvider } from "wagmi/providers/public";
 import { Alfajores, Celo } from "@celo/rainbowkit-celo/chains";
+import { ToastContainer } from "react-toastify";
 
 const projectId = process.env.NEXT_PUBLIC_WC_PROJECT_ID as string; // get one at https://cloud.walletconnect.com/app
 
@@ -40,6 +41,7 @@ function App({ Component, pageProps }: AppProps) {
                 appInfo={appInfo}
                 coolMode={true}
             >
+				<ToastContainer position='top-center'/>
                 <Layout>
                     <Component {...pageProps} />
                 </Layout>
