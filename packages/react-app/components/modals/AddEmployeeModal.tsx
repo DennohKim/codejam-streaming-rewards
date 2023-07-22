@@ -109,7 +109,6 @@ const AddEmployeeModal = () => {
       // Clear the loading state after the Employee is added to the marketplace
     } finally {
       setLoading('');
-	router.refresh();
 
     }
   };

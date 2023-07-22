@@ -3,17 +3,11 @@ import { useState } from 'react';
 // import ethers to convert the Employee price to wei
 import { ethers } from 'ethers';
 // Import the toast library to display notifications
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 // Import the useDebounce hook to debounce the input fields
-import { useDebounce } from 'use-debounce';
 
-// Import the erc20 contract abi to get the cUSD balance
-import { PencilIcon } from '@heroicons/react/24/outline';
-
-import { waitForTransaction } from '@wagmi/core';
-
-import { useContractSend } from '@/hooks/contracts/useContractWrite';
 import { Button } from '../ui/button';
+import { Framework } from '@superfluid-finance/sdk-core';
 
 // Define the AddEmployeeModal component
 interface employeeProps {
@@ -28,105 +22,76 @@ interface employeeProps {
   };
 }
 
+declare global {
+  interface Window {
+    ethereum?: any;
+  }
+}
+
 const SendFundsModal = ({ id, employee }: employeeProps) => {
   // The visible state is used to toggle the visibility of the modal
   const [visible, setVisible] = useState(false);
   // The following states are used to store the values of the input fields
-  const [employeeName, setEmployeeName] = useState(employee.employee_name);
-  const [employeeWalletAddress, setEmployeeWalletAddress] = useState<string>(
-    employee.address
-  );
-  const [employeePaymentMethod, setEmployeePaymentMethod] = useState(
-    employee.payment_method
-  );
-  const [employeeSalary, setEmployeeSalary] = useState<any>(
-    employee.employee_salary
-  );
 
-  // The following states are used to debounce the input fields
-  const [debouncedEmployeeName] = useDebounce(employeeName, 500);
-  const [debouncedAddress] = useDebounce(employeeWalletAddress, 500);
-  const [debouncedPaymentMethod] = useDebounce(employeePaymentMethod, 500);
-  const [debouncedEmployeeSalary] = useDebounce(employeeSalary, 500);
-  const [loading, setLoading] = useState('');
+  const [flowRateDisplay, setFlowRateDisplay] = useState('');
+  const [flowRate, setFlowRate] = useState('');
+  const [recipient, setRecipient] = useState(employee.address);
 
-  // Check if all the input fields are filled
-  const isComplete = () => {
-    if (employeeName.trim() == '' || employeeName.length < 2) {
-      toast.warn(
-        'Please enter valid Employee name (2 characters or more & not only whitespace'
-      );
-      return false;
-    }
-    if (
-      employeeWalletAddress.trim() == '' ||
-      employeeWalletAddress.length < 2
-    ) {
-      toast.warn('Please enter a valid wallet address');
-      return false;
-    }
-    if (
-      employeePaymentMethod.trim() == '' ||
-      employeePaymentMethod.length < 2
-    ) {
-      toast.warn('Please select a valid payment method');
-      return false;
-    }
-    if (Number(employeeSalary) < 1) {
-      toast.warn('Please enter a valid salary amount (> 0)');
-      return false;
-    }
+  async function createNewFlow(recipient: string, flowRate: any) {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    await provider.send('eth_requestAccounts', []);
+    const signer = provider.getSigner();
 
-    return true;
-  };
+    const sf = await Framework.create({
+      chainId: 137,
+      provider: provider,
+    });
+    const superSigner = sf.createSigner({ signer: signer });
+    const cusdx = await sf.loadSuperToken('CUSDx');
 
-  // Use the useContractSend hook to use our editEmployee function on the marketplace contract and add a Employee to the marketplace
-  const { writeAsync: editEmployeeFunc } = useContractSend(
-    'updateEmployeeDetails',
-    [
-      id,
-      debouncedEmployeeName,
-      debouncedAddress,
-      debouncedPaymentMethod,
-      debouncedEmployeeSalary,
-    ]
-  );
+    console.log(cusdx);
 
-  // Define function that handles the creation of a Employee through the marketplace contract
-  const handleEditEmployee = async () => {
-    if (!editEmployeeFunc) {
-      throw 'Failed to edit Employee';
-    }
-    setLoading('Editing...');
-    if (!isComplete()) throw new Error('Please fill all fields');
-    // Edit the Employee by calling the editEmployee function on the marketplace contract
-    const { hash: deleteHash } = await editEmployeeFunc();
-    setLoading('Waiting for confirmation...');
-    // Wait for the transaction to be mined
-    await waitForTransaction({ confirmations: 1, hash: deleteHash });
-    // Close the modal and clear the input fields after the Employee is added to the marketplace
-    setVisible(false);
-  };
-
-  // Define function that handles the editing of a Employee, if a user submits the Employee form
-  const editEmployee = async (e: any) => {
-    e.preventDefault();
     try {
-      // Display a notification while the Employee is being added to the marketplace
-      await toast.promise(handleEditEmployee(), {
-        pending: 'Editing Employee...',
-        success: 'Employee edited successfully',
-        error: 'Something went wrong. Try again.',
+      const createFlowOperation = cusdx.createFlow({
+        sender: await superSigner.getAddress(),
+        receiver: recipient,
+        flowRate: flowRate,
       });
-      // Display an error message if something goes wrong
-    } catch (e: any) {
-      console.log({ e });
-      toast.error(e?.message);
-      // Clear the loading state after the Employee is added to the marketplace
-    } finally {
-      setLoading('');
+
+      console.log(createFlowOperation);
+      toast('Creating your stream...');
+
+      const result = await createFlowOperation.exec(superSigner);
+      console.log(result);
+
+      toast.success(
+        `Congrats - you've just created a money stream!
+    `
+      );
+    } catch (error) {
+      console.log('Error: ', error);
+      toast.error(`Error: ${error}`);
+    }
+  }
+
+  const handleFlowRateChange = (e: any) => {
+    setFlowRate(() => ([e.target.name] = e.target.value));
+    let newFlowRateDisplay = calculateFlowRate(e.target.value);
+    if (newFlowRateDisplay) {
+      setFlowRateDisplay(newFlowRateDisplay.toString());
     }
   };
+
+  function calculateFlowRate(amount: any) {
+    if (Number(amount) === 0) {
+      return 0;
+    }
+    const amountInWei = ethers.BigNumber.from(amount);
+    const monthlyAmount = ethers.utils.formatEther(amountInWei.toString());
+    // @ts-ignore
+    const calculatedFlowRate = monthlyAmount * 3600 * 24 * 30;
+    return calculatedFlowRate;
+  }
 
   // Define the JSX that will be rendered
   return (
@@ -148,100 +113,69 @@ const SendFundsModal = ({ id, employee }: employeeProps) => {
           className='fixed z-40 overflow-y-auto top-0 w-full left-0'
           id='modal'
         >
-          {/* Form with input fields for the Employee, that triggers the editEmployee function on submit */}
-          <form onSubmit={editEmployee}>
-            <div className='flex items-center justify-center min-height-100vh pt-4 px-4 pb-20 text-center sm:block sm:p-0'>
-              <div className='fixed inset-0 transition-opacity'>
-                <div className='absolute inset-0 bg-gray-900 opacity-75' />
+          <div className='flex items-center justify-center min-height-100vh pt-4 px-4 pb-20 text-center sm:block sm:p-0'>
+            <div className='fixed inset-0 transition-opacity'>
+              <div className='absolute inset-0 bg-gray-900 opacity-75' />
+            </div>
+            <span className='hidden sm:inline-block sm:align-middle sm:h-screen'>
+              &#8203;
+            </span>
+            <div
+              className='inline-block align-center bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full'
+              role='dialog'
+              aria-modal='true'
+              aria-labelledby='modal-headline'
+            >
+              {/* Input fields for the Employee */}
+              <div>
+                <div className='flex flex-col items-start p-4'>
+                  <input
+                    value={recipient}
+                    className='text-black py-1 px-2 mb-2 w-72'
+                  />
+                  <input
+                    value={flowRate}
+                    onChange={handleFlowRateChange}
+                    placeholder='Enter a flowRate in wei/second'
+                    className='text-black py-1  px-2 w-72'
+                  />
+                  <Button
+                    className='px-8 py-2 rounded-3xl bg-white text-black mt-2'
+                    onClick={() => {
+                      createNewFlow(recipient, flowRate);
+                    }}
+                    variant='secondary'
+                  >
+                    Click to Create Your Stream
+                  </Button>
+                  <a
+                    className='mt-4 text-green-400'
+                    href='https://app.superfluid.finance/'
+                    target='_blank'
+                    rel='no-opener'
+                  >
+                    View Superfluid Dashboard
+                  </a>
+                </div>
+                <div className='border-green-400 border p-4 mt-3'>
+                  <p>Your flow will be equal to:</p>
+                  <p>
+                    <b>${flowRateDisplay !== ' ' ? flowRateDisplay : 0}</b>{' '}
+                    cusdx/month
+                  </p>
+                </div>
               </div>
-              <span className='hidden sm:inline-block sm:align-middle sm:h-screen'>
-                &#8203;
-              </span>
-              <div
-                className='inline-block align-center bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full'
-                role='dialog'
-                aria-modal='true'
-                aria-labelledby='modal-headline'
-              >
-                {/* Input fields for the Employee */}
-                <div className='bg-white flex flex-col space-y-3 px-4 pt-5 pb-4 sm:p-6 sm:pb-4'>
-                  <div>
-                    <label className='text-black'>Employee Name</label>
-                    <input
-                      onChange={(e) => {
-                        setEmployeeName(e.target.value);
-                      }}
-                      value={employeeName}
-                      required
-                      type='text'
-                      className='w-full bg-gray-200 p-2 mt-2 mb-3'
-                    />
-                  </div>
-                  <div>
-                    <label className='text-black'>
-                      Employee Wallet Address
-                    </label>
-                    <input
-                      onChange={(e) => {
-                        setEmployeeWalletAddress(e.target.value);
-                      }}
-                      value={employeeWalletAddress}
-                      required
-                      type='text'
-                      className='w-full bg-gray-200 p-2 mt-2 mb-3'
-                    />
-                  </div>
-                  <div className='flex flex-col space-y-1'>
-                    <label className='text-black'>
-                      Employee Payment Method
-                    </label>
-                    <select
-                      value={employeePaymentMethod}
-                      onChange={(e) => {
-                        setEmployeePaymentMethod(e.target.value);
-                      }}
-                      className='py-2.5'
-                    >
-                      <option defaultValue='Select token'>Select token</option>
-                      <option value='cusd'>cUSD</option>
-                      <option value='celo'>Celo</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className='text-black'>Employee Salary (cUSD)</label>
-                    <input
-                      onChange={(e) => {
-                        setEmployeeSalary(e.target.value);
-                      }}
-                      value={employeeSalary}
-                      required
-                      type='number'
-                      className='w-full bg-gray-200 p-2 mt-2 mb-3'
-                    />
-                  </div>
-                </div>
-                {/* Button to close the modal */}
-                <div className='bg-gray-200 px-4 py-3 text-right'>
-                  <button
-                    type='button'
-                    className='py-2 px-4 bg-gray-500 text-white rounded hover:bg-gray-700 mr-2'
-                    onClick={() => setVisible(false)}
-                  >
-                    <i className='fas fa-times'></i> Cancel
-                  </button>
-                  {/* Button to add the Employee to the marketplace */}
-                  <button
-                    type='submit'
-                    disabled={!!loading || !isComplete || !editEmployee}
-                    className='py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-700 mr-2'
-                  >
-                    {loading ? loading : 'Edit'}
-                  </button>
-                </div>
+              <div className='bg-gray-200 px-4 py-3 text-right'>
+                <button
+                  type='button'
+                  className='py-2 px-4 bg-gray-500 text-white rounded hover:bg-gray-700 mr-2'
+                  onClick={() => setVisible(false)}
+                >
+                  Cancel
+                </button>
               </div>
             </div>
-          </form>
+          </div>
         </div>
       )}
     </div>
