@@ -9,9 +9,12 @@ import { useDebounce } from 'use-debounce';
 import { useState } from 'react';
 import { useContractSend } from '@/hooks/contracts/useContractWrite';
 import { waitForTransaction } from '@wagmi/core';
+import { useRouter } from 'next/navigation';
 
 // The AddEmployeeModal component is used to add a Employee to the marketplace
 const AddEmployeeModal = () => {
+
+	const router = useRouter()
   // The visible state is used to toggle the modal
   const [visible, setVisible] = useState(false);
   // The following states are used to store the values of the form fields
@@ -91,7 +94,13 @@ const AddEmployeeModal = () => {
         loading: 'Creating Employee...',
         success: 'Employee created successfully',
         error: 'Something went wrong. Try again.',
+
       });
+	    setTimeout(() => {
+        router.refresh()
+      }, 5000);
+
+
       // Display an error message if something goes wrong
     } catch (e: any) {
       console.log({ e });
@@ -100,6 +109,8 @@ const AddEmployeeModal = () => {
       // Clear the loading state after the Employee is added to the marketplace
     } finally {
       setLoading('');
+	router.refresh();
+
     }
   };
 
