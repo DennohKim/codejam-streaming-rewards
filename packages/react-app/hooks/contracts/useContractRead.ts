@@ -15,7 +15,7 @@ export const useContractCall = (
     // The address of the smart contract, in this case the Marketplace from the JSON file
     address: '0xcD5a572dBe43785B6369E320009bB2B847c4b5ae',
     // The ABI of the smart contract, in this case the Marketplace from the JSON file
-    abi: employeeAbi,
+    abi: employeeAbi.abi,
     // The smart contract function name to call
     functionName: functionName,
     // The arguments to pass to the smart contract function

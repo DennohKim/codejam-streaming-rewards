@@ -11,6 +11,7 @@ import DataTableColumnHeader from './data-table-column-header';
 import EditEmployeeModal from '../modals/EditEmployeeModal';
 import DeleteEmployeeModal from '../modals/DeleteEmployeeModal';
 import SendFundsModal from '../modals/SendFundsModal';
+import { ethers } from 'ethers';
 
 const columns: ColumnDef<EmployeesType>[] = [
   {
@@ -44,6 +45,12 @@ const columns: ColumnDef<EmployeesType>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Employee Salary (cUSD)' />
     ),
+    cell: ({ row }) => {
+      const salary = row.getValue('employee_salary') as number;
+	  const salaryInCUSD = ethers.utils.formatUnits(salary, 18);
+
+      return <div>{salaryInCUSD.toString()} cUSD</div>;
+    },
   },
   {
     accessorKey: 'date',

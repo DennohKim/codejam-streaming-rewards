@@ -1,7 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useContractCall } from '@/hooks/contracts/useContractRead';
-import { useContractRead } from 'wagmi';
+import { useAccount, useContractRead } from 'wagmi';
 import employeeAbi from '@/abi/EmployeeDetails.json';
 import { useEffect, useRef, useState } from 'react';
 import { ethers } from 'ethers';
@@ -12,16 +12,18 @@ import { employeeContract, employeeDetailsAbi } from '@/constants/constants';
 const Home = () => {
   //const { data } = useContractCall('getNumberOfEmployees', [], true);
 
-    //  const { data, isError, isLoading } = useContractRead({
-    //    address: '0xcD5a572dBe43785B6369E320009bB2B847c4b5ae',
-    //    abi: employeeAbi,
-    //    functionName: 'getNumberOfEmployees',
-    //  });
+//   const {address}= useAccount();
+//      const { data, isError, isLoading } = useContractRead({
+//        address: employeeContract,
+//        abi: employeeDetailsAbi,
+//        functionName: 'getNumberOfEmployees',
+//        args: [address],
+//      });
 
-    // // Convert the data to a number
-    // const employeeLength = data ? Number(data.toString()) : 0;
+//     // // Convert the data to a number
+    //const employeeLength = data ? Number(data.toString()) : 0;
 
-	// console.log(employeeLength)
+	//console.log(employeeLength)
 
   const [ numberOfEmployees, setNumberOfEmployees]= useState(0);
   async function getItemLength() {
