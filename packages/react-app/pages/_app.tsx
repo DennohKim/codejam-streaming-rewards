@@ -7,7 +7,8 @@ import "../styles/globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
 import { publicProvider } from "wagmi/providers/public";
 import { Alfajores, Celo } from "@celo/rainbowkit-celo/chains";
-import { ToastContainer } from "react-toastify";
+import { Toaster } from "react-hot-toast";
+import AppDataProvider from "@/providers/AppDataProvider";
 
 const projectId = process.env.NEXT_PUBLIC_WC_PROJECT_ID as string; // get one at https://cloud.walletconnect.com/app
 
@@ -35,18 +36,16 @@ const wagmiConfig = createConfig({
 
 function App({ Component, pageProps }: AppProps) {
     return (
-        <WagmiConfig config={wagmiConfig}>
-            <RainbowKitProvider
-                chains={chains}
-                appInfo={appInfo}
-                coolMode={true}
-            >
-				<ToastContainer position='top-center'/>
-                <Layout>
-                    <Component {...pageProps} />
-                </Layout>
-            </RainbowKitProvider>
-        </WagmiConfig>
+      <WagmiConfig config={wagmiConfig}>
+        <RainbowKitProvider chains={chains} appInfo={appInfo} coolMode={true}>
+          <AppDataProvider>
+            <Toaster position='top-center' />
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </AppDataProvider>
+        </RainbowKitProvider>
+      </WagmiConfig>
     );
 }
 

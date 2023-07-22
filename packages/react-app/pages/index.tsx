@@ -1,12 +1,58 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useContractCall } from '@/hooks/contracts/useContractRead';
+import { useContractRead } from 'wagmi';
+import employeeAbi from '@/abi/EmployeeDetails.json';
+import { useEffect, useRef, useState } from 'react';
+import { ethers } from 'ethers';
+import { employeeContract, employeeDetailsAbi } from '@/constants/constants';
+
+
 
 const Home = () => {
-  const { data } = useContractCall('getEmployeeCount', [], true);
+  //const { data } = useContractCall('getNumberOfEmployees', [], true);
 
-  // Convert the data to a number
-  const employeeLength = data ? Number(data.toString()) : 0;
+    //  const { data, isError, isLoading } = useContractRead({
+    //    address: '0xcD5a572dBe43785B6369E320009bB2B847c4b5ae',
+    //    abi: employeeAbi,
+    //    functionName: 'getNumberOfEmployees',
+    //  });
+
+    // // Convert the data to a number
+    // const employeeLength = data ? Number(data.toString()) : 0;
+
+	// console.log(employeeLength)
+
+  const [ numberOfEmployees, setNumberOfEmployees]= useState(0);
+  async function getItemLength() {
+    try {
+      const provider = new ethers.providers.Web3Provider(
+        window.ethereum as any
+      );
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(
+        employeeContract,
+        employeeDetailsAbi,
+        signer
+      );
+
+      const getNumberOfEmployees = await contract.getNumberOfEmployees();
+      return getNumberOfEmployees;
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  //get my products
+  useEffect(() => {
+    getItemLength().then((data) => {
+      setNumberOfEmployees(data);
+      console.log(data);
+    });
+  }, []);
+
+  const employeeLength = ethers.BigNumber.from(numberOfEmployees).toString();
+  console.log(employeeLength);
 
   return (
     <div className='p-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4'>
@@ -29,7 +75,12 @@ const Home = () => {
           </svg>
         </CardHeader>
         <CardContent>
-          <div className='text-2xl font-bold'>{employeeLength}</div>
+          {/* {isLoading ? (
+              <p className='text-2xl font-bold'>Loading...</p>
+            ) : (
+              <div className='text-2xl font-bold'>{employeeLength}</div>
+            )} */}
+          <p>{employeeLength}</p>
         </CardContent>
       </Card>
     </div>

@@ -13,6 +13,7 @@ import { PencilIcon } from '@heroicons/react/24/outline';
 import { waitForTransaction } from '@wagmi/core';
 
 import { useContractSend } from '@/hooks/contracts/useContractWrite';
+import { Button } from '../ui/button';
 
 // Define the AddEmployeeModal component
 interface employeeProps {
@@ -27,7 +28,7 @@ interface employeeProps {
   };
 }
 
-const EditEmployeeModal = ({ id, employee }: employeeProps) => {
+const SendFundsModal = ({ id, employee }: employeeProps) => {
   // The visible state is used to toggle the visibility of the modal
   const [visible, setVisible] = useState(false);
   // The following states are used to store the values of the input fields
@@ -134,11 +135,11 @@ const EditEmployeeModal = ({ id, employee }: employeeProps) => {
       <button
         type='button'
         onClick={() => setVisible(true)}
-        className='inline-block p-1 bg-white text-black font-medium text-md leading-tight rounded-[4px] shadow-md border border-black'
+        className='inline-block text-black font-medium text-md leading-tight rounded-[4px] shadow-md'
         Employee-bs-toggle='modal'
         Employee-bs-target='#exampleModalCenter'
       >
-        <PencilIcon className='block h-4 w-4' aria-hidden='true' />
+        <Button>Send funds</Button>
       </button>
 
       {/* Modal */}
@@ -247,4 +248,4 @@ const EditEmployeeModal = ({ id, employee }: employeeProps) => {
   );
 };
 
-export default EditEmployeeModal;
+export default SendFundsModal;

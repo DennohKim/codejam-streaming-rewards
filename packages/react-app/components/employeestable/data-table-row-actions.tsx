@@ -17,7 +17,7 @@ export function DataTableRowActions<TData>({
 	row,
 }: DataTableRowActionsProps<TData>) {
 	const router = useRouter();
-	const employees = employeesSchema.parse(row.original);
+	// const employees = employeesSchema.parse(row.original);
 
 	return (
 		<DropdownMenu>
@@ -33,7 +33,6 @@ export function DataTableRowActions<TData>({
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align='end' className='w-[160px]'>
 				<DropdownMenuItem
-					onClick={() => router.push(`/employee/${employees.id}`)}
 				>
 					View Details
 				</DropdownMenuItem>

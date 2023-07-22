@@ -3,13 +3,12 @@ import { ethers } from 'ethers';
 // Import the useAccount and useBalance hooks to get the user's address and balance
 import { useAccount } from 'wagmi';
 // Import the toast library to display notifications
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 // Import the useDebounce hook to debounce the input fields
 import { useDebounce } from 'use-debounce';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useContractSend } from '@/hooks/contracts/useContractWrite';
-import { writeContract, waitForTransaction } from '@wagmi/core';
-import { useToast } from '../ui/use-toast';
+import { waitForTransaction } from '@wagmi/core';
 
 // The AddEmployeeModal component is used to add a Employee to the marketplace
 const AddEmployeeModal = () => {
@@ -89,7 +88,7 @@ const AddEmployeeModal = () => {
     try {
       // Display a notification while the Employee is being added to the marketplace
       await toast.promise(handleCreateEmployee(), {
-        pending: 'Creating Employee...',
+        loading: 'Creating Employee...',
         success: 'Employee created successfully',
         error: 'Something went wrong. Try again.',
       });

@@ -1,7 +1,7 @@
 // Import the wagmi hooks to prepare and write to a smart contract
 import { useContractWrite, usePrepareContractWrite } from 'wagmi';
 // Import the Marketplace ABI(Interface)
-import { employeeContract, employeeDetailsAbi } from '@/constants/constants';
+import employeeAbi from '@/abi/EmployeeDetails.json';
 // Import BigNumber from ethers to handle big numbers used in Celo
 import { BigNumber } from 'ethers';
 
@@ -13,11 +13,11 @@ export const useContractDelete = (id: number) => {
   // Prepare the write to the smart contract
   const { config } = usePrepareContractWrite({
     // The address of the smart contract, in this case the Marketplace from the JSON file
-    address: employeeContract as `0x${string}`,
+    address: "0x8f2c4e1cBcD5a572dBe43785B6369E320009bB2B847c4b5ae",
     // The ABI of the smart contract, in this case the Marketplace from the JSON file
-    abi: employeeDetailsAbi,
+    abi: employeeAbi,
     // The smart contract function name to call
-    functionName: 'deleteProduct',
+    functionName: 'deleteEmployeeDetails',
     // The arguments to pass to the smart contract function, id to delete
     args: [id],
     // The gas limit to use when sending a transaction

@@ -96,7 +96,7 @@ const DeleteEmployeeModal = ({ id }: Props) => {
               >
                 {/* Input fields for the Employee */}
                 <div className='bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4'>
-                  <p>Are you sure you want to delete this Employee?</p>
+                  <p className='text-black'>Are you sure you want to delete this Employee?</p>
                 </div>
                 {/* Button to close the modal */}
                 <div className='bg-gray-200 px-4 py-3 text-right'>
