@@ -65,7 +65,7 @@ const columns: ColumnDef<EmployeesType>[] = [
   },
 
   {
-    accessorKey: 'Actions',
+    accessorKey: 'index',
     header: 'Actions',
 
     cell: ({ row }) => {
@@ -84,11 +84,12 @@ const columns: ColumnDef<EmployeesType>[] = [
   },
 
   {
-    id: 'Send Funds',
+    accessorKey: 'index',
     header: 'Send Funds',
     cell: ({ row }) => {
       const id = row.getValue('index') as number;
       const employee = row.original;
+	  console.log('employee', employee);
 
       return (
         <div>

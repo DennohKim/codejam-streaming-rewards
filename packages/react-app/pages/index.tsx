@@ -53,7 +53,7 @@ const Home = () => {
     });
   }, []);
 
-  const employeeLength = ethers.BigNumber.from(numberOfEmployees).toString();
+  const employeeLength = numberOfEmployees ? ethers.BigNumber.from(numberOfEmployees).toString(): 0;
   console.log(employeeLength);
 
   return (

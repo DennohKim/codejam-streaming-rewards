@@ -7,7 +7,6 @@ import { useState } from 'react';
 import ErrorAlert from '@/components/alerts/ErrorAlert';
 import LoadingAlert from '@/components/alerts/LoadingAlert';
 import SuccessAlert from '@/components/alerts/SuccessAlert';
-import EmployeesList from '@/components/EmployeesList';
 
 // Alerts component
 const Alerts = ({ error, success, loading, clear }: any) => {
@@ -37,7 +36,6 @@ const EmployeesPage = () => {
 
       <AddEmployeeModal />
       <EmployeeTable />
-	  {/* <EmployeesList/> */}
     </div>
   );
 };

@@ -1,7 +1,6 @@
 
 // Import the Marketplace ABI(Interface)
-import employeeAbi from '@/abi/EmployeeDetails.json';
-import { employeeContract } from '@/constants/constants';
+import { employeeContract, employeeDetailsAbi } from '@/constants/constants';
 import { BigNumber } from 'ethers';
 import { useContractWrite, usePrepareContractWrite } from 'wagmi';
 
@@ -15,7 +14,7 @@ export const useContractSend = (functionName: string, args: Array<any>) => {
     // The address of the smart contract, in this case the Marketplace from the JSON file
     address: employeeContract,
     // The ABI of the smart contract, in this case the Marketplace from the JSON file
-    abi: employeeAbi.abi,
+    abi: employeeDetailsAbi,
     // The smart contract function name to call
     functionName,
     // The arguments to pass to the smart contract function

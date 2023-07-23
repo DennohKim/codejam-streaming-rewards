@@ -37,13 +37,13 @@ const SendFundsModal = ({ id, employee }: employeeProps) => {
   const [flowRate, setFlowRate] = useState('');
   const [recipient, setRecipient] = useState(employee.address);
 
-  async function createNewFlow(recipient: string, flowRate: any) {
+  async function createNewFlow(recipient: string, flowRate: string) {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     await provider.send('eth_requestAccounts', []);
     const signer = provider.getSigner();
 
     const sf = await Framework.create({
-      chainId: 137,
+      chainId: 80001,
       provider: provider,
     });
     const superSigner = sf.createSigner({ signer: signer });

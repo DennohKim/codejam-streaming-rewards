@@ -19,7 +19,7 @@ const AddEmployeeModal = () => {
   const [visible, setVisible] = useState(false);
   // The following states are used to store the values of the form fields
   const [employeeName, setEmployeeName] = useState('');
-  const [employeeSalary, setEmployeeSalary] = useState<string | number>(0);
+  const [employeeSalary, setEmployeeSalary] = useState<string | Number>(0);
   const [employeeWalletAddress, setEmployeeWalletAddress] = useState('');
   const [employeePaymentMethod, setEmployeePaymentMethod] = useState('');
   // The following states are used to store the debounced values of the form fields
@@ -149,7 +149,6 @@ const AddEmployeeModal = () => {
                   aria-modal='true'
                   aria-labelledby='modal-headline'
                 >
-                  {/* Input fields for the Employee */}
                   <div className='bg-white flex flex-col space-y-3 px-4 pt-5 pb-4 sm:p-6 sm:pb-4'>
                     <div>
                       <label>Employee Name</label>
@@ -202,7 +201,6 @@ const AddEmployeeModal = () => {
                       />
                     </div>
                   </div>
-                  {/* Button to close the modal */}
                   <div className='bg-gray-200 px-4 py-3 text-right'>
                     <button
                       type='button'
@@ -211,7 +209,6 @@ const AddEmployeeModal = () => {
                     >
                       Cancel
                     </button>
-                    {/* Button to add the Employee to the marketplace */}
                     <button
                       type='submit'
                       disabled={!!loading || !isComplete || !createEmployee}
