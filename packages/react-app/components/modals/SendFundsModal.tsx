@@ -43,7 +43,7 @@ const SendFundsModal = ({ id, employee }: employeeProps) => {
     const signer = provider.getSigner();
 
     const sf = await Framework.create({
-      chainId: 80001,
+      chainId: 42220,
       provider: provider,
     });
     const superSigner = sf.createSigner({ signer: signer });
