@@ -37,7 +37,7 @@ const columns: ColumnDef<EmployeesType>[] = [
   {
     accessorKey: 'payment_method',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Payment Method' />
+      <DataTableColumnHeader column={column} title='Payment Currency' />
     ),
   },
   {
@@ -55,7 +55,7 @@ const columns: ColumnDef<EmployeesType>[] = [
   {
     accessorKey: 'date',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Date' />
+      <DataTableColumnHeader column={column} title='Date Added' />
     ),
     cell: ({ row }) => {
       const convertedDate = row.getValue('date') as number;
@@ -89,7 +89,6 @@ const columns: ColumnDef<EmployeesType>[] = [
     cell: ({ row }) => {
       const id = row.getValue('index') as number;
       const employee = row.original;
-	  console.log('employee', employee);
 
       return (
         <div>

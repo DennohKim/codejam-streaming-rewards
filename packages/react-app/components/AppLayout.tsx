@@ -10,7 +10,6 @@ import Navigation from './Navigation';
 const navigation = [
   { name: 'Overview', href: '/' },
   { name: 'Employees', href: '/employees' },
-  { name: 'Transactions', href: '/transactions' },
 ];
 
 const AppLayout = ({ children }: PropsWithChildren<{}>) => {
