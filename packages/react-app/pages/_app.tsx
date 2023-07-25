@@ -11,6 +11,7 @@ import { Toaster } from "react-hot-toast";
 import AppDataProvider from "@/providers/AppDataProvider";
 import { polygonMumbai } from "viem/chains";
 
+
 const projectId = process.env.NEXT_PUBLIC_WC_PROJECT_ID as string; // get one at https://cloud.walletconnect.com/app
 
 const { chains, publicClient } = configureChains(

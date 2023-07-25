@@ -16,9 +16,9 @@ const navigation = [
 const AppLayout = ({ children }: PropsWithChildren<{}>) => {
   return (
     <div className='min-h-screen bg-neutral-100'>
-      <div className='bg-neutral-800 pb-32 dark'>
+      <div className='bg-secondary pb-32 dark'>
         <Collapsible asChild>
-          <nav className='bg-neutral-800 group'>
+          <nav className='bg-secondary group'>
             <div className='mx-auto max-w-7xl sm:px-6 lg:px-8'>
               <div className='border-b border-neutral-700'>
                 <div className='flex h-16 items-center justify-between px-4 sm:px-0'>

@@ -121,7 +121,7 @@ const AddEmployeeModal = () => {
         <button
           type='button'
           onClick={() => setVisible(true)}
-          className='inline-block ml-4 px-6 py-2.5 border-2 border-border text-neutral-700 font-medium text-md leading-tight rounded-lg shadow-md hover:bg-black hover:text-white hover:shadow-lg focus:bg-black focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out'
+          className='inline-block ml-4 px-6 py-2.5 border-2 border-primary text-neutral-700 font-medium text-md leading-tight rounded-lg shadow-md hover:bg-primary hover:text-white hover:shadow-lg focus:bg-primary focus:shadow-lg focus:outline-none focus:ring-0 active:bg-primary active:shadow-lg transition duration-150 ease-in-out'
           data-bs-toggle='modal'
           data-bs-target='#exampleModalCenter'
         >

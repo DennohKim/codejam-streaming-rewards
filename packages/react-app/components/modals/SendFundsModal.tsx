@@ -100,7 +100,7 @@ const SendFundsModal = ({ id, employee }: employeeProps) => {
       <button
         type='button'
         onClick={() => setVisible(true)}
-        className='inline-block text-black font-medium text-md leading-tight rounded-[4px] shadow-md'
+        className='inline-block text-secondary font-medium text-md leading-tight rounded-[4px] shadow-md'
         Employee-bs-toggle='modal'
         Employee-bs-target='#exampleModalCenter'
       >
@@ -128,19 +128,30 @@ const SendFundsModal = ({ id, employee }: employeeProps) => {
             >
               {/* Input fields for the Employee */}
               <div>
+                <h2 className='font-bold text-xl p-4'>
+                  Stream Employee Salary in cUSD
+                </h2>
                 <div className='flex flex-col items-start p-4'>
+                  <label className='py-2 text-neutral-500' htmlFor='recipient'>
+                    Recipient Wallet Address
+                  </label>
                   <input
                     value={recipient}
-                    className='text-black py-1 px-2 mb-2 w-72'
+                    className='text-black mb-2 w-full'
+                    name='recipient'
                   />
+                  <label className='py-2 text-neutral-500' htmlFor='recipient'>
+                    Enter a flowRate in wei/second
+                  </label>
+
                   <input
                     value={flowRate}
                     onChange={handleFlowRateChange}
                     placeholder='Enter a flowRate in wei/second'
-                    className='text-black py-1  px-2 w-72'
+                    className='text-black rounded-md border-2 border-secondary py-2  px-2 w-3/4'
                   />
                   <Button
-                    className='px-8 py-2 rounded-3xl bg-white text-black mt-2'
+                    className='px-8 py-2 rounded-md text-white mt-4 hover:bg-[#0c7277]'
                     onClick={() => {
                       createNewFlow(recipient, flowRate);
                     }}
@@ -168,7 +179,7 @@ const SendFundsModal = ({ id, employee }: employeeProps) => {
               <div className='bg-gray-200 px-4 py-3 text-right'>
                 <button
                   type='button'
-                  className='py-2 px-4 bg-gray-500 text-white rounded hover:bg-gray-700 mr-2'
+                  className='py-2 px-4 bg-red-500 text-white rounded hover:bg-gray-700 mr-2'
                   onClick={() => setVisible(false)}
                 >
                   Cancel
