@@ -31,7 +31,7 @@ const AppLayout = ({ children }: PropsWithChildren<{}>) => {
                       />
                     </Link>
                   </div>
-                  <div className='hidden md:block'>
+                  <div className=''>
                     <div className='ml-4 flex items-center md:ml-6'>
                     
                       <div className='relative ml-3'>
@@ -57,7 +57,7 @@ const AppLayout = ({ children }: PropsWithChildren<{}>) => {
                   </div>
                 </div>
               </div>
-              <div className='mt-2 hidden md:flex items-baseline space-x-4'>
+              <div className='mt-2 items-baseline space-x-4'>
                 {navigation.map((item) => (
                   <Navigation key={item.name} href={item.href}>
                     {item.name}
@@ -65,7 +65,7 @@ const AppLayout = ({ children }: PropsWithChildren<{}>) => {
                 ))}
               </div>
             </div>
-            <CollapsibleContent className='border-b border-neutral-700 md:hidden'>
+            <CollapsibleContent className='border-b border-neutral-700'>
               <MobileProfileNav navigation={navigation} />
             </CollapsibleContent>
           </nav>
