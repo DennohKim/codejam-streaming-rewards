@@ -30,7 +30,7 @@ const SendFundsModal = ({ id, celodev }: celodevProps) => {
   const [flowRateDisplay, setFlowRateDisplay] = useState('');
   const [flowRate, setFlowRate] = useState('');
   const [recipient, setRecipient] = useState(celodev.walletAddress);
-  const [salary, setSalary] = useState(celodev.rewardAmount);
+  const [rewardAmount, setRewardAmount] = useState(celodev.rewardAmount);
 
 
   async function createNewFlow(recipient: string, flowRate: string) {
@@ -43,7 +43,7 @@ const SendFundsModal = ({ id, celodev }: celodevProps) => {
       provider: provider,
     });
     const superSigner = sf.createSigner({ signer: signer });
-    const cusdx = await sf.loadSuperToken('CUSDx');
+    const cusdx = await sf.loadSuperToken('cUSDx');
 
     console.log(cusdx);
 
@@ -137,7 +137,7 @@ const SendFundsModal = ({ id, celodev }: celodevProps) => {
                     Reward Amount (wei)
                   </label>
                   <input
-                    value={salary}
+                    value={rewardAmount}
                     className='text-black mb-2 w-full'
                     name='reward'
                   />

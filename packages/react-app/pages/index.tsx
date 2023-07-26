@@ -14,16 +14,16 @@ const Home = () => {
 
 //   const {address}= useAccount();
 //      const { data, isError, isLoading } = useContractRead({
-//        address: employeeContract,
-//        abi: employeeDetailsAbi,
-//        functionName: 'getNumberOfEmployees',
+//        address: celodevsContract,
+//        abi: celodevsDetailsAbi,
+//        functionName: 'getNumberOfCelodevs',
 //        args: [address],
 //      });
 
 //     // // Convert the data to a number
-    //const employeeLength = data ? Number(data.toString()) : 0;
+//     const celodevsLength = data ? Number(data.toString()) : 0;
 
-	//console.log(employeeLength)
+// 	console.log(celodevsLength)
 
   const [ numberOfCelodevs, setNumberOfCelodevs]= useState(0);
   async function getItemLength() {
