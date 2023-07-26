@@ -1,20 +1,15 @@
-// Importing the dependencies
 import { useState } from 'react';
-// import ethers to convert the Employee price to wei
 import { ethers } from 'ethers';
-// Import the toast library to display notifications
 import { toast } from 'react-toastify';
-// Import the useDebounce hook to debounce the input fields
 import { useDebounce } from 'use-debounce';
 
-// Import the erc20 contract abi to get the cUSD balance
 import { PencilIcon } from '@heroicons/react/24/outline';
 
 import { waitForTransaction } from '@wagmi/core';
 
 import { useContractSend } from '@/hooks/contracts/useContractWrite';
+import { useRouter } from 'next/navigation';
 
-// Define the AddEmployeeModal component
 interface employeeProps {
   id: number;
   employee: {
@@ -28,9 +23,10 @@ interface employeeProps {
 }
 
 const EditEmployeeModal = ({ id, employee }: employeeProps) => {
-  // The visible state is used to toggle the visibility of the modal
+
+	const router = useRouter();
+
   const [visible, setVisible] = useState(false);
-  // The following states are used to store the values of the input fields
   const [employeeName, setEmployeeName] = useState(employee.employee_name);
   const [employeeWalletAddress, setEmployeeWalletAddress] = useState<string>(
     employee.address
@@ -42,14 +38,12 @@ const EditEmployeeModal = ({ id, employee }: employeeProps) => {
     employee.employee_salary
   );
 
-  // The following states are used to debounce the input fields
   const [debouncedEmployeeName] = useDebounce(employeeName, 500);
   const [debouncedAddress] = useDebounce(employeeWalletAddress, 500);
   const [debouncedPaymentMethod] = useDebounce(employeePaymentMethod, 500);
   const [debouncedEmployeeSalary] = useDebounce(employeeSalary, 500);
   const [loading, setLoading] = useState('');
 
-  // Check if all the input fields are filled
   const isComplete = () => {
     if (employeeName.trim() == '' || employeeName.length < 2) {
       toast.warn(
@@ -79,7 +73,6 @@ const EditEmployeeModal = ({ id, employee }: employeeProps) => {
     return true;
   };
 
-  // Use the useContractSend hook to use our editEmployee function on the marketplace contract and add a Employee to the marketplace
   const { writeAsync: editEmployeeFunc } = useContractSend(
     'updateEmployeeDetails',
     [
@@ -91,46 +84,40 @@ const EditEmployeeModal = ({ id, employee }: employeeProps) => {
     ]
   );
 
-  // Define function that handles the creation of a Employee through the marketplace contract
   const handleEditEmployee = async () => {
     if (!editEmployeeFunc) {
       throw 'Failed to edit Employee';
     }
     setLoading('Editing...');
     if (!isComplete()) throw new Error('Please fill all fields');
-    // Edit the Employee by calling the editEmployee function on the marketplace contract
-    const { hash: deleteHash } = await editEmployeeFunc();
+    const { hash: editHash } = await editEmployeeFunc();
     setLoading('Waiting for confirmation...');
-    // Wait for the transaction to be mined
-    await waitForTransaction({ confirmations: 1, hash: deleteHash });
-    // Close the modal and clear the input fields after the Employee is added to the marketplace
+    await waitForTransaction({ confirmations: 1, hash: editHash });
     setVisible(false);
   };
 
-  // Define function that handles the editing of a Employee, if a user submits the Employee form
   const editEmployee = async (e: any) => {
     e.preventDefault();
     try {
-      // Display a notification while the Employee is being added to the marketplace
       await toast.promise(handleEditEmployee(), {
         pending: 'Editing Employee...',
         success: 'Employee edited successfully',
         error: 'Something went wrong. Try again.',
       });
-      // Display an error message if something goes wrong
+	   setTimeout(() => {
+       router.refresh();
+     }, 7000);
+
     } catch (e: any) {
       console.log({ e });
       toast.error(e?.message);
-      // Clear the loading state after the Employee is added to the marketplace
     } finally {
       setLoading('');
     }
   };
 
-  // Define the JSX that will be rendered
   return (
     <div>
-      {/* Add Employee Button that opens the modal */}
       <button
         type='button'
         onClick={() => setVisible(true)}
@@ -147,7 +134,6 @@ const EditEmployeeModal = ({ id, employee }: employeeProps) => {
           className='fixed z-40 overflow-y-auto top-0 w-full left-0'
           id='modal'
         >
-          {/* Form with input fields for the Employee, that triggers the editEmployee function on submit */}
           <form onSubmit={editEmployee}>
             <div className='flex items-center justify-center min-height-100vh pt-4 px-4 pb-20 text-center sm:block sm:p-0'>
               <div className='fixed inset-0 transition-opacity'>
@@ -162,7 +148,6 @@ const EditEmployeeModal = ({ id, employee }: employeeProps) => {
                 aria-modal='true'
                 aria-labelledby='modal-headline'
               >
-                {/* Input fields for the Employee */}
                 <div className='bg-white flex flex-col space-y-3 px-4 pt-5 pb-4 sm:p-6 sm:pb-4'>
                   <div>
                     <label className='text-black'>Employee Name</label>
@@ -220,7 +205,6 @@ const EditEmployeeModal = ({ id, employee }: employeeProps) => {
                     />
                   </div>
                 </div>
-                {/* Button to close the modal */}
                 <div className='bg-gray-200 px-4 py-3 text-right'>
                   <button
                     type='button'
@@ -229,7 +213,6 @@ const EditEmployeeModal = ({ id, employee }: employeeProps) => {
                   >
                     <i className='fas fa-times'></i> Cancel
                   </button>
-                  {/* Button to add the Employee to the marketplace */}
                   <button
                     type='submit'
                     disabled={!!loading || !isComplete || !editEmployee}

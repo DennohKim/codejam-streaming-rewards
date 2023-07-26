@@ -1,15 +1,10 @@
-// Importing the dependencies
 import { useState } from 'react';
-// import ethers to convert the Employee price to wei
 import { ethers } from 'ethers';
-// Import the toast library to display notifications
 import { toast } from 'react-hot-toast';
-// Import the useDebounce hook to debounce the input fields
 
 import { Button } from '../ui/button';
 import { Framework } from '@superfluid-finance/sdk-core';
 
-// Define the AddEmployeeModal component
 interface employeeProps {
   id: number;
   employee: {
@@ -29,9 +24,7 @@ declare global {
 }
 
 const SendFundsModal = ({ id, employee }: employeeProps) => {
-  // The visible state is used to toggle the visibility of the modal
   const [visible, setVisible] = useState(false);
-  // The following states are used to store the values of the input fields
 
   const [flowRateDisplay, setFlowRateDisplay] = useState('');
   const [flowRate, setFlowRate] = useState('');
@@ -93,10 +86,8 @@ const SendFundsModal = ({ id, employee }: employeeProps) => {
     return calculatedFlowRate;
   }
 
-  // Define the JSX that will be rendered
   return (
     <div>
-      {/* Add Employee Button that opens the modal */}
       <button
         type='button'
         onClick={() => setVisible(true)}
@@ -126,7 +117,6 @@ const SendFundsModal = ({ id, employee }: employeeProps) => {
               aria-modal='true'
               aria-labelledby='modal-headline'
             >
-              {/* Input fields for the Employee */}
               <div>
                 <h2 className='font-bold text-xl p-4'>
                   Stream Employee Salary in cUSD

@@ -7,6 +7,7 @@ import { useState } from 'react';
 import ErrorAlert from '@/components/alerts/ErrorAlert';
 import LoadingAlert from '@/components/alerts/LoadingAlert';
 import SuccessAlert from '@/components/alerts/SuccessAlert';
+import { NextPage } from 'next';
 
 // Alerts component
 const Alerts = ({ error, success, loading, clear }: any) => {
@@ -18,7 +19,7 @@ const Alerts = ({ error, success, loading, clear }: any) => {
     </div>
   );
 };
-const EmployeesPage = () => {
+const EmployeesPage: NextPage = () => {
   // Define the states to store the error, success and loading messages
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');

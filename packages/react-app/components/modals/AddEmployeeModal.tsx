@@ -1,28 +1,20 @@
-// import ethers to convert the Employee Salary to wei
 import { ethers } from 'ethers';
-// Import the useAccount and useBalance hooks to get the user's address and balance
 import { useAccount } from 'wagmi';
-// Import the toast library to display notifications
 import { toast } from 'react-hot-toast';
-// Import the useDebounce hook to debounce the input fields
 import { useDebounce } from 'use-debounce';
 import { useState } from 'react';
 import { useContractSend } from '@/hooks/contracts/useContractWrite';
 import { waitForTransaction } from '@wagmi/core';
 import { useRouter } from 'next/navigation';
 
-// The AddEmployeeModal component is used to add a Employee to the marketplace
 const AddEmployeeModal = () => {
 
 	const router = useRouter()
-  // The visible state is used to toggle the modal
   const [visible, setVisible] = useState(false);
-  // The following states are used to store the values of the form fields
   const [employeeName, setEmployeeName] = useState('');
   const [employeeSalary, setEmployeeSalary] = useState<string | Number>(0);
   const [employeeWalletAddress, setEmployeeWalletAddress] = useState('');
   const [employeePaymentMethod, setEmployeePaymentMethod] = useState('');
-  // The following states are used to store the debounced values of the form fields
   const [debouncedEmployeeName] = useDebounce(employeeName, 500);
   const [debouncedEmployeeSalary] = useDebounce(employeeSalary, 500);
   const [debouncedEmployeeWalletAddress] = useDebounce(
@@ -33,17 +25,14 @@ const AddEmployeeModal = () => {
     employeePaymentMethod,
     500
   );
-  // The loading state is used to display a loading message
   const [loading, setLoading] = useState('');
 
-  // Check if all the input fields are filled
   const isComplete =
     employeeName &&
     employeeSalary &&
     employeeWalletAddress &&
     employeePaymentMethod;
 
-  // Clear the input fields after the Employee is added to the marketplace
   const clearForm = () => {
     setEmployeeName('');
     setEmployeeSalary(0);
@@ -51,12 +40,10 @@ const AddEmployeeModal = () => {
     setEmployeePaymentMethod('');
   };
 
-  // Convert the Employee Salary to wei
   const EmployeeSalaryInWei = ethers.utils.parseEther(
     `${debouncedEmployeeSalary.toString() || 0}`
   );
 
-  // Use the useContractSend hook to use our writeEmployee function on the marketplace contract and add a Employee to the marketplace
   const { writeAsync: createEmployee } = useContractSend(
     'captureEmployeeDetails',
     [
@@ -67,29 +54,24 @@ const AddEmployeeModal = () => {
     ]
   );
 
-  // Define function that handles the creation of a Employee through the marketplace contract
   const handleCreateEmployee = async () => {
     if (!createEmployee) {
       throw 'Failed to create Employee';
     }
     setLoading('Creating...');
     if (!isComplete) throw new Error('Please fill all fields');
-    // Create the Employee by calling the writeEmployee function on the marketplace contract
     const { hash: approveHash } = await createEmployee();
     setLoading('Waiting for confirmation...');
 
     await waitForTransaction({ confirmations: 1, hash: approveHash });
 
-    // Close the modal and clear the input fields after the Employee is added to the marketplace
     setVisible(false);
     clearForm();
   };
 
-  // Define function that handles the creation of a Employee, if a user submits the Employee form
   const addEmployee = async (e: any) => {
     e.preventDefault();
     try {
-      // Display a notification while the Employee is being added to the marketplace
       await toast.promise(handleCreateEmployee(), {
         loading: 'Creating Employee...',
         success: 'Employee created successfully',
@@ -98,26 +80,22 @@ const AddEmployeeModal = () => {
       });
 	    setTimeout(() => {
         router.refresh()
-      }, 5000);
+      }, 7000);
 
 
-      // Display an error message if something goes wrong
     } catch (e: any) {
       console.log({ e });
       toast.error(e?.message || 'Something went wrong. Try again.');
 
-      // Clear the loading state after the Employee is added to the marketplace
     } finally {
       setLoading('');
 
     }
   };
 
-  // Define the JSX that will be rendered
   return (
     <div className={'flex flex-row w-full justify-between'}>
       <div>
-        {/* Add Employee Button that opens the modal */}
         <button
           type='button'
           onClick={() => setVisible(true)}
@@ -134,7 +112,6 @@ const AddEmployeeModal = () => {
             className='fixed z-40 overflow-y-auto top-0 w-full left-0'
             id='modal'
           >
-            {/* Form with input fields for the Employee, that triggers the addEmployee function on submit */}
             <form onSubmit={addEmployee}>
               <div className='flex items-center justify-center min-height-100vh pt-4 px-4 pb-20 text-center sm:block sm:p-0'>
                 <div className='fixed inset-0 transition-opacity'>
