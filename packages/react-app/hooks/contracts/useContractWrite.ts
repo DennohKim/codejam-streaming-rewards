@@ -1,6 +1,6 @@
 
 // Import the Marketplace ABI(Interface)
-import { employeeContract, employeeDetailsAbi } from '@/constants/constants';
+import { celodevsContract, celodevsDetailsAbi } from '@/constants/constants';
 import { BigNumber } from 'ethers';
 import { useContractWrite, usePrepareContractWrite } from 'wagmi';
 
@@ -9,8 +9,8 @@ export const useContractSend = (functionName: string, args: Array<any>) => {
   const gasLimit = BigNumber.from(1000000);
 
   const { config } = usePrepareContractWrite({
-    address: employeeContract,
-    abi: employeeDetailsAbi,
+    address: celodevsContract,
+    abi: celodevsDetailsAbi,
     functionName,
     args,
     // overrides: {

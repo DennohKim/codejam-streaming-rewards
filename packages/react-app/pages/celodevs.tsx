@@ -1,5 +1,5 @@
-import AddEmployeeModal from '@/components/modals/AddEmployeeModal';
-import EmployeeTable from '@/components/employeestable/employee-table';
+import AddEmployeeModal from '@/components/modals/AddCelodevModal';
+import EmployeeTable from '@/components/celodevstable/celodevs-table';
 
 // Importing the dependencies
 import { useState } from 'react';
@@ -19,7 +19,7 @@ const Alerts = ({ error, success, loading, clear }: any) => {
     </div>
   );
 };
-const EmployeesPage: NextPage = () => {
+const CelodevsPage: NextPage = () => {
   // Define the states to store the error, success and loading messages
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -41,4 +41,4 @@ const EmployeesPage: NextPage = () => {
   );
 };
 
-export default EmployeesPage;
+export default CelodevsPage;

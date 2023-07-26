@@ -5,60 +5,62 @@ import { ColumnDef } from '@tanstack/react-table';
 
 import { statuses } from './data/data';
 import { convertBlockTimestampToDate, truncateAddr } from '@/lib/utils';
-import { EmployeesType } from './data/schema';
+import { celodevsType } from './data/schema';
 import { DataTableRowActions } from './data-table-row-actions';
 import DataTableColumnHeader from './data-table-column-header';
-import EditEmployeeModal from '../modals/EditEmployeeModal';
-import DeleteEmployeeModal from '../modals/DeleteEmployeeModal';
 import SendFundsModal from '../modals/SendFundsModal';
 import { ethers } from 'ethers';
+import EditCelodevModal from '../modals/EditCelodevModal';
+import DeleteCelodevModal from '../modals/DeleteCelodevModal';
 
-const columns: ColumnDef<EmployeesType>[] = [
+const columns: ColumnDef<celodevsType>[] = [
   {
-    accessorKey: 'employee_name',
+    accessorKey: 'name',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Employee Name' />
+      <DataTableColumnHeader column={column} title='Name' />
     ),
-    cell: ({ row }) => (
-      <div className='w-[80px]'>{row.getValue('employee_name')}</div>
-    ),
+    cell: ({ row }) => <div className='w-[80px]'>{row.getValue('name')}</div>,
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: 'address',
+    accessorKey: 'walletAddress',
     header: 'Address',
     cell: ({ row }) => {
-      const userAddress = row.getValue('address') as string;
+      const userAddress = row.getValue('walletAddress') as string;
 
       return <div>{truncateAddr(userAddress)}</div>;
     },
   },
   {
-    accessorKey: 'payment_method',
+    accessorKey: 'paymentCurrency',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Payment Currency' />
+      <DataTableColumnHeader column={column} title='Currency' />
     ),
   },
   {
-    accessorKey: 'employee_salary',
+    accessorKey: 'taskDescription',
+    header: "Task"
+  },
+  {
+    accessorKey: 'rewardAmount',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Employee Salary (cUSD)' />
+      <DataTableColumnHeader column={column} title='Reward (cUSD)' />
     ),
     cell: ({ row }) => {
-      const salary = row.getValue('employee_salary') as number;
-	  const salaryInCUSD = ethers.utils.formatUnits(salary, 18);
+      const salary = row.getValue('rewardAmount') as number;
+      const salaryInCUSD = ethers.utils.formatUnits(salary, 18);
 
       return <div>{salaryInCUSD.toString()} cUSD</div>;
     },
   },
   {
-    accessorKey: 'date',
+    accessorKey: 'dateCaptured',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Date Added' />
     ),
     cell: ({ row }) => {
-      const convertedDate = row.getValue('date') as number;
+      const convertedDate = row.getValue('dateCaptured') as number;
 
       return <div>{convertBlockTimestampToDate(convertedDate)}</div>;
     },
@@ -70,13 +72,13 @@ const columns: ColumnDef<EmployeesType>[] = [
 
     cell: ({ row }) => {
       const id = row.getValue('index') as number;
-      const employee = row.original;
+      const celodev = row.original;
 
       return (
         <div>
           <div className='flex flex-row'>
-            <EditEmployeeModal id={id} employee={employee} />
-            <DeleteEmployeeModal id={id} />
+            <EditCelodevModal id={id} celodev={celodev} />
+            <DeleteCelodevModal id={id} />
           </div>
         </div>
       );
@@ -88,12 +90,12 @@ const columns: ColumnDef<EmployeesType>[] = [
     header: 'Send Funds',
     cell: ({ row }) => {
       const id = row.getValue('index') as number;
-      const employee = row.original;
+      const celodev = row.original;
 
       return (
         <div>
           <div className='flex flex-row'>
-            <SendFundsModal id={id} employee={employee} />
+            <SendFundsModal id={id} celodev={celodev} />
           </div>
         </div>
       );

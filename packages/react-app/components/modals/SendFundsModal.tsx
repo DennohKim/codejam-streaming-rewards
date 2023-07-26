@@ -5,15 +5,16 @@ import { toast } from 'react-hot-toast';
 import { Button } from '../ui/button';
 import { Framework } from '@superfluid-finance/sdk-core';
 
-interface employeeProps {
+interface celodevProps {
   id: number;
-  employee: {
+  celodev: {
     owner: string;
-    employee_name: string;
-    address: string;
-    payment_method: string;
-    employee_salary: number;
-    date: string;
+    name: string;
+    walletAddress: string;
+    paymentCurrency: string;
+    taskDescription: string;
+    rewardAmount: number;
+    dateCaptured: string;
   };
 }
 
@@ -23,12 +24,14 @@ declare global {
   }
 }
 
-const SendFundsModal = ({ id, employee }: employeeProps) => {
+const SendFundsModal = ({ id, celodev }: celodevProps) => {
   const [visible, setVisible] = useState(false);
 
   const [flowRateDisplay, setFlowRateDisplay] = useState('');
   const [flowRate, setFlowRate] = useState('');
-  const [recipient, setRecipient] = useState(employee.address);
+  const [recipient, setRecipient] = useState(celodev.walletAddress);
+  const [salary, setSalary] = useState(celodev.rewardAmount);
+
 
   async function createNewFlow(recipient: string, flowRate: string) {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -91,11 +94,11 @@ const SendFundsModal = ({ id, employee }: employeeProps) => {
       <button
         type='button'
         onClick={() => setVisible(true)}
-        className='inline-block text-secondary font-medium text-md leading-tight rounded-[4px] shadow-md'
-        Employee-bs-toggle='modal'
-        Employee-bs-target='#exampleModalCenter'
+        className='inline-block text-secondary font-medium text-sm leading-tight rounded-[4px] shadow-md'
+        celodev-bs-toggle='modal'
+        celodev-bs-target='#exampleModalCenter'
       >
-        <Button>Send funds</Button>
+        <Button className='text-sm'>Send</Button>
       </button>
 
       {/* Modal */}
@@ -119,7 +122,7 @@ const SendFundsModal = ({ id, employee }: employeeProps) => {
             >
               <div>
                 <h2 className='font-bold text-xl p-4'>
-                  Stream Employee Salary in cUSD
+                  Stream CodeJam Rewards in cUSD
                 </h2>
                 <div className='flex flex-col items-start p-4'>
                   <label className='py-2 text-neutral-500' htmlFor='recipient'>
@@ -129,6 +132,14 @@ const SendFundsModal = ({ id, employee }: employeeProps) => {
                     value={recipient}
                     className='text-black mb-2 w-full'
                     name='recipient'
+                  />
+                  <label className='py-2 text-neutral-500' htmlFor='reward'>
+                    Reward Amount (wei)
+                  </label>
+                  <input
+                    value={salary}
+                    className='text-black mb-2 w-full'
+                    name='reward'
                   />
                   <label className='py-2 text-neutral-500' htmlFor='recipient'>
                     Enter a flowRate in wei/second

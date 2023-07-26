@@ -1,9 +1,10 @@
-export interface iEmployeeDetails {
+export interface iCelodevsDetails {
   index: number;
   owner: string;
-  employee_name: string;
-  address: string;
-  payment_method: string;
-  employee_salary: number;
-  date: string;
+  name: string;
+  walletAddress: string;
+  paymentCurrency: string;
+  taskDescription: string;
+  rewardAmount: number;
+  dateCaptured: string;
 };

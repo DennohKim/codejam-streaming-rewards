@@ -3,7 +3,7 @@
 // Version of Solidity compiler this program was written for
 pragma solidity >=0.7.0 <0.9.0;
 
-contract CelodevDetails {
+contract CelodevsDetails {
     struct Celodev {
         address payable owner;
         string name;

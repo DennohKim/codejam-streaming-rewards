@@ -1,4 +1,4 @@
-import { iEmployeeDetails } from '@/typings';
+import { iCelodevsDetails } from '@/typings';
 import { ethers } from 'ethers';
 import {
   createContext,
@@ -9,8 +9,7 @@ import {
   useState,
 } from 'react';
 
-import employeeAbi from '@/abi/EmployeeDetails.json';
-import { employeeContract, employeeDetailsAbi } from '@/constants/constants';
+import { celodevsContract, celodevsDetailsAbi } from '@/constants/constants';
 
 declare global {
   interface Window {
@@ -23,8 +22,8 @@ type AppDataProviderProps = {
 };
 
 type AppDataContextType = {
-  getEmployees: () => Promise<iEmployeeDetails[]>;
-  employeesDetails: iEmployeeDetails[];
+  getCelodevs: () => Promise<iCelodevsDetails[]>;
+  celodevsDetails: iCelodevsDetails[];
 };
 
 export const AppDataContext = createContext({} as AppDataContextType);
@@ -34,12 +33,12 @@ export function useAppData() {
 }
 
 export default function AppDataProvider({ children }: AppDataProviderProps) {
-  const [employeesDetails, setEmployeesDetails] = useState<iEmployeeDetails[]>(
+  const [celodevsDetails, setCelodevsDetails] = useState<iCelodevsDetails[]>(
     []
   );
 
-  const getEmployees = useCallback(async function (): Promise<
-    iEmployeeDetails[]
+  const getCelodevs = useCallback(async function (): Promise<
+    iCelodevsDetails[]
   > {
     if (!window.ethereum) {
       // Handle the case where window.ethereum is not available
@@ -52,55 +51,56 @@ export default function AppDataProvider({ children }: AppDataProviderProps) {
       );
       const signer = provider.getSigner();
       const contract = new ethers.Contract(
-        employeeContract,
-        employeeDetailsAbi,
+        celodevsContract,
+        celodevsDetailsAbi,
         signer
       );
-      const getNumberOfEmployees = await contract.getNumberOfEmployees();
-      const employeesLength =
-        ethers.BigNumber.from(getNumberOfEmployees).toNumber();
-      console.log(employeesLength);
-      const _employeesData = [];
+      const getNumberOfCelodevs = await contract.getNumberOfCelodevs();
+      const celodevsLength =
+        ethers.BigNumber.from(getNumberOfCelodevs).toNumber();
+      console.log(celodevsLength);
+      const _celodevsData = [];
 
-      for (let i = 0; i < employeesLength; i++) {
-        let _employeeData = new Promise<iEmployeeDetails>(
+      for (let i = 0; i < celodevsLength; i++) {
+        let _celodevData = new Promise<iCelodevsDetails>(
           async (resolve, reject) => {
-            let p = await contract.getEmployeeDetails(i);
+            let p = await contract.getCelodevDetails(i);
             resolve({
               index: i,
               owner: p[0],
-              employee_name: p[1],
-              address: p[2],
-              payment_method: p[3],
-              employee_salary: p[4],
-              date: p[5],
+              name: p[1],
+              walletAddress: p[2],
+              paymentCurrency: p[3],
+			  taskDescription: p[4],
+              rewardAmount: p[5],
+              dateCaptured: p[6],
             });
           }
         );
-        _employeesData.push(_employeeData);
+        _celodevsData.push(_celodevData);
       }
-      const employeeData = await Promise.all(_employeesData);
-      return employeeData;
+      const celodevData = await Promise.all(_celodevsData);
+      return celodevData;
     } catch (error) {
       // Handle errors if any
-      console.error('Error fetching employee details:', error);
+      console.error('Error fetching celodev details:', error);
       return [];
     }
   },
   []);
 
   useEffect(() => {
-    getEmployees().then((data) => {
-      setEmployeesDetails(data);
+    getCelodevs().then((data) => {
+      setCelodevsDetails(data);
       console.log(data);
     });
-  }, [getEmployees]);
+  }, [getCelodevs]);
 
   return (
     <AppDataContext.Provider
       value={{
-        getEmployees,
-        employeesDetails,
+        getCelodevs,
+        celodevsDetails,
       }}
     >
       {children}

@@ -2,20 +2,20 @@ const { ethers } = require('hardhat');
 
 async function main() {
   // Load the marketplace contract artifacts
-  const EmployeeDetailsFactory = await ethers.getContractFactory(
-    'EmployeeDetails'
+  const CelodevsDetailsFactory = await ethers.getContractFactory(
+    'CelodevsDetails'
   );
 
   // Deploy the contract
-  const EmployeeDetailsContract = await EmployeeDetailsFactory.deploy();
+  const CelodevsDetailsContract = await CelodevsDetailsFactory.deploy();
 
   // Wait for deployment to finish
-  await EmployeeDetailsContract.deployed();
+  await CelodevsDetailsContract.deployed();
 
   // Log the address of the new contract
   console.log(
-    'Employee Details deployed to:',
-    EmployeeDetailsContract.address
+    'Celodevs Details deployed to:',
+    CelodevsDetailsContract.address
   );
 }
 

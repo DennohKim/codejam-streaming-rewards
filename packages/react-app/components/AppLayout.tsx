@@ -9,7 +9,7 @@ import Navigation from './Navigation';
 
 const navigation = [
   { name: 'Overview', href: '/' },
-  { name: 'Employees', href: '/employees' },
+  { name: 'Celo Devs', href: '/celodevs' },
 ];
 
 const AppLayout = ({ children }: PropsWithChildren<{}>) => {

@@ -10,32 +10,32 @@ interface Props {
   id: number;
 }
 
-const DeleteEmployeeModal = ({ id }: Props) => {
+const DeleteCelodevModal = ({ id }: Props) => {
 
 	const router = useRouter();
 
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState('');
 
-  const { writeAsync: deleteEmployeeFunc } = useContractDelete(id);
+  const { writeAsync: deleteCelodevFunc } = useContractDelete(id);
 
-  const handleDeleteEmployee = async () => {
-    if (!deleteEmployeeFunc) {
-      throw 'Failed to delete Employee';
+  const handleDeleteCelodev = async () => {
+    if (!deleteCelodevFunc) {
+      throw 'Failed to delete Celodev';
     }
     setLoading('Deleting...');
-    const { hash: deleteHash }= await deleteEmployeeFunc();
+    const { hash: deleteHash }= await deleteCelodevFunc();
     setLoading('Waiting for confirmation...');
     await waitForTransaction({ confirmations: 1, hash: deleteHash });
     setVisible(false);
   };
 
-  const deleteEmployee = async (e: any) => {
+  const deleteCelodev = async (e: any) => {
     e.preventDefault();
     try {
-      await toast.promise(handleDeleteEmployee(), {
-        pending: 'Deleting Employee...',
-        success: 'Employee deleted successfully',
+      await toast.promise(handleDeleteCelodev(), {
+        pending: 'Deleting Celodev...',
+        success: 'Celodev deleted successfully',
         error: 'Something went wrong. Try again.',
       });
       setTimeout(() => {
@@ -67,7 +67,7 @@ const DeleteEmployeeModal = ({ id }: Props) => {
           className='fixed z-40 overflow-y-auto top-0 w-full left-0'
           id='modal'
         >
-          <form onSubmit={deleteEmployee}>
+          <form onSubmit={deleteCelodev}>
             <div className='flex items-center justify-center min-height-100vh pt-4 px-4 pb-20 text-center sm:block sm:p-0'>
               <div className='fixed inset-0 transition-opacity'>
                 <div className='absolute inset-0 bg-gray-900 opacity-75' />
@@ -82,7 +82,7 @@ const DeleteEmployeeModal = ({ id }: Props) => {
                 aria-labelledby='modal-headline'
               >
                 <div className='bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4'>
-                  <p className='text-black'>Are you sure you want to delete this Employee?</p>
+                  <p className='text-black'>Are you sure you want to delete this Celodev?</p>
                 </div>
                 <div className='bg-gray-200 px-4 py-3 text-right'>
                   <button
@@ -94,7 +94,7 @@ const DeleteEmployeeModal = ({ id }: Props) => {
                   </button>
                   <button
                     type='submit'
-                    disabled={!!loading || !deleteEmployee}
+                    disabled={!!loading || !deleteCelodev}
                     className='py-2 px-4 bg-red-500 text-white rounded hover:bg-red-700 mr-2'
                   >
                     {loading ? loading : 'Delete'}
@@ -109,4 +109,4 @@ const DeleteEmployeeModal = ({ id }: Props) => {
   );
 };
 
-export default DeleteEmployeeModal;
+export default DeleteCelodevModal;

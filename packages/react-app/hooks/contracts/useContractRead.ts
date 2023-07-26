@@ -1,4 +1,4 @@
-import employeeAbi from '@/abi/EmployeeDetails.json';
+import { celodevsDetailsAbi } from '@/constants/constants';
 import { useContractRead } from 'wagmi';
 
 export const useContractCall = (
@@ -8,8 +8,8 @@ export const useContractCall = (
   from?: `0x${string}` | undefined
 ) => {
   const resp = useContractRead({
-    address: '0xcD5a572dBe43785B6369E320009bB2B847c4b5ae',
-    abi: employeeAbi.abi,
+    address: '0x19b68555839C65bD34455E52f24486f1dbf9fbEb',
+    abi: celodevsDetailsAbi,
     functionName: functionName,
     args,
     watch,

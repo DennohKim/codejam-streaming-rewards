@@ -7,60 +7,61 @@ import { useContractSend } from '@/hooks/contracts/useContractWrite';
 import { waitForTransaction } from '@wagmi/core';
 import { useRouter } from 'next/navigation';
 
-const AddEmployeeModal = () => {
+const AddCelodevModal = () => {
 
 	const router = useRouter()
+
   const [visible, setVisible] = useState(false);
-  const [employeeName, setEmployeeName] = useState('');
-  const [employeeSalary, setEmployeeSalary] = useState<string | Number>(0);
-  const [employeeWalletAddress, setEmployeeWalletAddress] = useState('');
-  const [employeePaymentMethod, setEmployeePaymentMethod] = useState('');
-  const [debouncedEmployeeName] = useDebounce(employeeName, 500);
-  const [debouncedEmployeeSalary] = useDebounce(employeeSalary, 500);
-  const [debouncedEmployeeWalletAddress] = useDebounce(
-    employeeWalletAddress,
-    500
-  );
-  const [debouncedEmployeePaymentMethod] = useDebounce(
-    employeePaymentMethod,
-    500
-  );
+  const [celodevName, setCelodevName] = useState("");
+  const [celodevWalletAddress, setCelodevWalletAddress] = useState<string>("");
+  const [celodevPaymentCurrency, setCelodevPaymentCurrency] = useState("");
+  const [celodevTaskDescription, setCelodevTaskDescription] = useState("");
+  const [celodevRewardAmount, setCelodevRewardAmount] = useState<string | number>(0);
+
+  const [debouncedCelodevName] = useDebounce(celodevName, 500);
+  const [debouncedCelodevWalletAddress] = useDebounce(celodevWalletAddress, 500);
+  const [debouncedCelodevPaymentCurrency] = useDebounce(celodevPaymentCurrency, 500);
+  const [debouncedCelodevTaskDescription] = useDebounce(celodevTaskDescription, 500);
+  const [debouncedCelodevRewardAmount] = useDebounce(celodevRewardAmount, 500);
   const [loading, setLoading] = useState('');
 
   const isComplete =
-    employeeName &&
-    employeeSalary &&
-    employeeWalletAddress &&
-    employeePaymentMethod;
+    celodevName &&
+    celodevRewardAmount &&
+    celodevWalletAddress &&
+    celodevPaymentCurrency &&
+	celodevTaskDescription;
 
   const clearForm = () => {
-    setEmployeeName('');
-    setEmployeeSalary(0);
-    setEmployeeWalletAddress('');
-    setEmployeePaymentMethod('');
+    setCelodevName('');
+    setCelodevRewardAmount(0);
+    setCelodevWalletAddress('');
+    setCelodevTaskDescription('');
+	setCelodevPaymentCurrency('');
   };
 
-  const EmployeeSalaryInWei = ethers.utils.parseEther(
-    `${debouncedEmployeeSalary.toString() || 0}`
+  const CelodevRewardAmountInWei = ethers.utils.parseEther(
+    `${debouncedCelodevRewardAmount.toString() || 0}`
   );
 
-  const { writeAsync: createEmployee } = useContractSend(
-    'captureEmployeeDetails',
+  const { writeAsync: createCelodev } = useContractSend(
+    'captureCelodevDetails',
     [
-      debouncedEmployeeName,
-      debouncedEmployeeWalletAddress,
-      debouncedEmployeePaymentMethod,
-      EmployeeSalaryInWei,
+      debouncedCelodevName,
+      debouncedCelodevWalletAddress,
+      debouncedCelodevPaymentCurrency,
+      debouncedCelodevTaskDescription,
+      CelodevRewardAmountInWei,
     ]
   );
 
-  const handleCreateEmployee = async () => {
-    if (!createEmployee) {
-      throw 'Failed to create Employee';
+  const handleCreateCelodev = async () => {
+    if (!createCelodev) {
+      throw 'Failed to create Celodev';
     }
     setLoading('Creating...');
     if (!isComplete) throw new Error('Please fill all fields');
-    const { hash: approveHash } = await createEmployee();
+    const { hash: approveHash } = await createCelodev();
     setLoading('Waiting for confirmation...');
 
     await waitForTransaction({ confirmations: 1, hash: approveHash });
@@ -69,12 +70,12 @@ const AddEmployeeModal = () => {
     clearForm();
   };
 
-  const addEmployee = async (e: any) => {
+  const addCelodev = async (e: any) => {
     e.preventDefault();
     try {
-      await toast.promise(handleCreateEmployee(), {
-        loading: 'Creating Employee...',
-        success: 'Employee created successfully',
+      await toast.promise(handleCreateCelodev(), {
+        loading: 'Creating Celodev...',
+        success: 'Celodev created successfully',
         error: 'Something went wrong. Try again.',
 
       });
@@ -103,7 +104,7 @@ const AddEmployeeModal = () => {
           data-bs-toggle='modal'
           data-bs-target='#exampleModalCenter'
         >
-          Add Employee
+          Add Celodev
         </button>
 
         {/* Modal */}
@@ -112,7 +113,7 @@ const AddEmployeeModal = () => {
             className='fixed z-40 overflow-y-auto top-0 w-full left-0'
             id='modal'
           >
-            <form onSubmit={addEmployee}>
+            <form onSubmit={addCelodev}>
               <div className='flex items-center justify-center min-height-100vh pt-4 px-4 pb-20 text-center sm:block sm:p-0'>
                 <div className='fixed inset-0 transition-opacity'>
                   <div className='absolute inset-0 bg-gray-900 opacity-75' />
@@ -128,10 +129,10 @@ const AddEmployeeModal = () => {
                 >
                   <div className='bg-white flex flex-col space-y-3 px-4 pt-5 pb-4 sm:p-6 sm:pb-4'>
                     <div>
-                      <label>Employee Name</label>
+                      <label>Celodev Name</label>
                       <input
                         onChange={(e) => {
-                          setEmployeeName(e.target.value);
+                          setCelodevName(e.target.value);
                         }}
                         required
                         type='text'
@@ -139,22 +140,23 @@ const AddEmployeeModal = () => {
                       />
                     </div>
                     <div>
-                      <label>Employee Wallet Address</label>
+                      <label>Celodev Wallet Address</label>
                       <input
                         onChange={(e) => {
-                          setEmployeeWalletAddress(e.target.value);
+                          setCelodevWalletAddress(e.target.value);
                         }}
                         required
                         type='text'
                         className='w-full bg-gray-100 p-2 mt-2 mb-3'
                       />
                     </div>
+
                     <div className='flex flex-col space-y-1'>
-                      <label>Employee Payment Method</label>
+                      <label>Celodev Payment Currency</label>
                       <select
-                        value={employeePaymentMethod}
+                        value={celodevPaymentCurrency}
                         onChange={(e) => {
-                          setEmployeePaymentMethod(e.target.value);
+                          setCelodevPaymentCurrency(e.target.value);
                         }}
                         className='py-2.5'
                       >
@@ -165,12 +167,23 @@ const AddEmployeeModal = () => {
                         <option value='celo'>Celo</option>
                       </select>
                     </div>
-
                     <div>
-                      <label>Employee Salary (cUSD)</label>
+                      <label>Task Description</label>
                       <input
                         onChange={(e) => {
-                          setEmployeeSalary(e.target.value);
+                          setCelodevTaskDescription(e.target.value);
+                        }}
+                        required
+                        type='text'
+                        className='w-full bg-gray-100 p-2 mt-2 mb-3'
+                      />
+                    </div>
+
+                    <div>
+                      <label>Celodev Reward Amount (cUSD)</label>
+                      <input
+                        onChange={(e) => {
+                          setCelodevRewardAmount(e.target.value);
                         }}
                         required
                         type='number'
@@ -188,7 +201,7 @@ const AddEmployeeModal = () => {
                     </button>
                     <button
                       type='submit'
-                      disabled={!!loading || !isComplete || !createEmployee}
+                      disabled={!!loading || !isComplete || !createCelodev}
                       className='py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-700 mr-2'
                     >
                       {loading ? loading : 'Create'}
@@ -204,4 +217,4 @@ const AddEmployeeModal = () => {
   );
 };
 
-export default AddEmployeeModal;
+export default AddCelodevModal;

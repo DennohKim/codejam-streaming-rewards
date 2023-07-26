@@ -5,7 +5,7 @@ import { useAccount, useContractRead } from 'wagmi';
 import employeeAbi from '@/abi/EmployeeDetails.json';
 import { useEffect, useRef, useState } from 'react';
 import { ethers } from 'ethers';
-import { employeeContract, employeeDetailsAbi } from '@/constants/constants';
+import { celodevsContract, celodevsDetailsAbi } from '@/constants/constants';
 
 
 
@@ -25,7 +25,7 @@ const Home = () => {
 
 	//console.log(employeeLength)
 
-  const [ numberOfEmployees, setNumberOfEmployees]= useState(0);
+  const [ numberOfCelodevs, setNumberOfCelodevs]= useState(0);
   async function getItemLength() {
     try {
       const provider = new ethers.providers.Web3Provider(
@@ -33,13 +33,13 @@ const Home = () => {
       );
       const signer = provider.getSigner();
       const contract = new ethers.Contract(
-        employeeContract,
-        employeeDetailsAbi,
+        celodevsContract,
+        celodevsDetailsAbi,
         signer
       );
 
-      const getNumberOfEmployees = await contract.getNumberOfEmployees();
-      return getNumberOfEmployees;
+      const getNumberOfCelodevs = await contract.getNumberOfCelodevs();
+      return getNumberOfCelodevs;
     } catch (err) {
       console.error(err);
     }
@@ -48,19 +48,19 @@ const Home = () => {
   //get my products
   useEffect(() => {
     getItemLength().then((data) => {
-      setNumberOfEmployees(data);
+      setNumberOfCelodevs(data);
       console.log(data);
     });
   }, []);
 
-  const employeeLength = numberOfEmployees ? ethers.BigNumber.from(numberOfEmployees).toString(): 0;
-  console.log(employeeLength);
+  const celodevsLength = numberOfCelodevs ? ethers.BigNumber.from(numberOfCelodevs).toString(): 0;
+  console.log(celodevsLength);
 
   return (
     <div className='p-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4'>
       <Card>
         <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-          <CardTitle className='text-sm font-medium'>Total Employees</CardTitle>
+          <CardTitle className='text-sm font-medium'>Total Celo devs</CardTitle>
           <svg
             xmlns='http://www.w3.org/2000/svg'
             viewBox='0 0 24 24'
@@ -82,7 +82,7 @@ const Home = () => {
             ) : (
               <div className='text-2xl font-bold'>{employeeLength}</div>
             )} */}
-          <p>{employeeLength}</p>
+          <p>{celodevsLength}</p>
         </CardContent>
       </Card>
     </div>

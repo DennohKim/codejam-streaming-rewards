@@ -10,62 +10,75 @@ import { waitForTransaction } from '@wagmi/core';
 import { useContractSend } from '@/hooks/contracts/useContractWrite';
 import { useRouter } from 'next/navigation';
 
-interface employeeProps {
+interface celodevProps {
   id: number;
-  employee: {
+  celodev: {
     owner: string;
-    employee_name: string;
-    address: string;
-    payment_method: string;
-    employee_salary: number;
-    date: string;
+    name: string;
+    walletAddress: string;
+    paymentCurrency: string;
+    taskDescription: string;
+    rewardAmount: number;
+    dateCaptured: string;
   };
 }
 
-const EditEmployeeModal = ({ id, employee }: employeeProps) => {
+
+const EditCelodevModal = ({ id, celodev }: celodevProps) => {
 
 	const router = useRouter();
 
   const [visible, setVisible] = useState(false);
-  const [employeeName, setEmployeeName] = useState(employee.employee_name);
-  const [employeeWalletAddress, setEmployeeWalletAddress] = useState<string>(
-    employee.address
+  const [celodevName, setCelodevName] = useState(celodev.name);
+  const [celodevWalletAddress, setCelodevWalletAddress] = useState<string>(
+    celodev.walletAddress
   );
-  const [employeePaymentMethod, setEmployeePaymentMethod] = useState(
-    employee.payment_method
+  const [celodevPaymentCurrency, setCelodevPaymentCurrency] = useState(
+    celodev.paymentCurrency
   );
-  const [employeeSalary, setEmployeeSalary] = useState<any>(
-    employee.employee_salary
+   const [celodevTaskDescription, setCelodevTaskDescription] = useState(
+     celodev.taskDescription
+   );
+  const [celodevRewardAmount, setCelodevRewardAmount] = useState<any>(
+    celodev.rewardAmount
   );
 
-  const [debouncedEmployeeName] = useDebounce(employeeName, 500);
-  const [debouncedAddress] = useDebounce(employeeWalletAddress, 500);
-  const [debouncedPaymentMethod] = useDebounce(employeePaymentMethod, 500);
-  const [debouncedEmployeeSalary] = useDebounce(employeeSalary, 500);
+  const [debouncedCelodevName] = useDebounce(celodevName, 500);
+  const [debouncedWalletAddress] = useDebounce(celodevWalletAddress, 500);
+  const [debouncedPaymentCurrency] = useDebounce(celodevPaymentCurrency, 500);
+  const [debouncedTaskDescription] = useDebounce(celodevTaskDescription, 500);
+  const [debouncedCelodevRewardAmount] = useDebounce(celodevRewardAmount, 500);
   const [loading, setLoading] = useState('');
 
   const isComplete = () => {
-    if (employeeName.trim() == '' || employeeName.length < 2) {
+    if (celodevName.trim() == '' || celodevName.length < 2) {
       toast.warn(
-        'Please enter valid Employee name (2 characters or more & not only whitespace'
+        'Please enter valid Celodev name (2 characters or more & not only whitespace'
       );
       return false;
     }
     if (
-      employeeWalletAddress.trim() == '' ||
-      employeeWalletAddress.length < 2
+      celodevWalletAddress.trim() == '' ||
+      celodevWalletAddress.length < 2
     ) {
       toast.warn('Please enter a valid wallet address');
       return false;
     }
     if (
-      employeePaymentMethod.trim() == '' ||
-      employeePaymentMethod.length < 2
+      celodevPaymentCurrency.trim() == '' ||
+      celodevPaymentCurrency.length < 2
     ) {
       toast.warn('Please select a valid payment method');
       return false;
     }
-    if (Number(employeeSalary) < 1) {
+	 if (
+     celodevTaskDescription.trim() == '' ||
+     celodevTaskDescription.length < 2
+   ) {
+     toast.warn('Please select a valid payment method');
+     return false;
+   }
+    if (Number(celodevRewardAmount) < 1) {
       toast.warn('Please enter a valid salary amount (> 0)');
       return false;
     }
@@ -73,35 +86,36 @@ const EditEmployeeModal = ({ id, employee }: employeeProps) => {
     return true;
   };
 
-  const { writeAsync: editEmployeeFunc } = useContractSend(
-    'updateEmployeeDetails',
+  const { writeAsync: editCelodevFunc } = useContractSend(
+    'updateCelodevDetails',
     [
       id,
-      debouncedEmployeeName,
-      debouncedAddress,
-      debouncedPaymentMethod,
-      debouncedEmployeeSalary,
+      debouncedCelodevName,
+      debouncedWalletAddress,
+      debouncedPaymentCurrency,
+      debouncedTaskDescription,
+      debouncedCelodevRewardAmount,
     ]
   );
 
-  const handleEditEmployee = async () => {
-    if (!editEmployeeFunc) {
-      throw 'Failed to edit Employee';
+  const handleEditCelodev = async () => {
+    if (!editCelodevFunc) {
+      throw 'Failed to edit Celodev';
     }
     setLoading('Editing...');
     if (!isComplete()) throw new Error('Please fill all fields');
-    const { hash: editHash } = await editEmployeeFunc();
+    const { hash: editHash } = await editCelodevFunc();
     setLoading('Waiting for confirmation...');
     await waitForTransaction({ confirmations: 1, hash: editHash });
     setVisible(false);
   };
 
-  const editEmployee = async (e: any) => {
+  const editCelodev = async (e: any) => {
     e.preventDefault();
     try {
-      await toast.promise(handleEditEmployee(), {
-        pending: 'Editing Employee...',
-        success: 'Employee edited successfully',
+      await toast.promise(handleEditCelodev(), {
+        pending: 'Editing Celodev...',
+        success: 'Celodev edited successfully',
         error: 'Something went wrong. Try again.',
       });
 	   setTimeout(() => {
@@ -122,8 +136,8 @@ const EditEmployeeModal = ({ id, employee }: employeeProps) => {
         type='button'
         onClick={() => setVisible(true)}
         className='inline-block p-1 bg-white text-black font-medium text-md leading-tight rounded-[4px] shadow-md border border-black'
-        Employee-bs-toggle='modal'
-        Employee-bs-target='#exampleModalCenter'
+        Celodev-bs-toggle='modal'
+        Celodev-bs-target='#exampleModalCenter'
       >
         <PencilIcon className='block h-4 w-4' aria-hidden='true' />
       </button>
@@ -134,7 +148,7 @@ const EditEmployeeModal = ({ id, employee }: employeeProps) => {
           className='fixed z-40 overflow-y-auto top-0 w-full left-0'
           id='modal'
         >
-          <form onSubmit={editEmployee}>
+          <form onSubmit={editCelodev}>
             <div className='flex items-center justify-center min-height-100vh pt-4 px-4 pb-20 text-center sm:block sm:p-0'>
               <div className='fixed inset-0 transition-opacity'>
                 <div className='absolute inset-0 bg-gray-900 opacity-75' />
@@ -150,39 +164,35 @@ const EditEmployeeModal = ({ id, employee }: employeeProps) => {
               >
                 <div className='bg-white flex flex-col space-y-3 px-4 pt-5 pb-4 sm:p-6 sm:pb-4'>
                   <div>
-                    <label className='text-black'>Employee Name</label>
+                    <label className='text-black'>Celodev Name</label>
                     <input
                       onChange={(e) => {
-                        setEmployeeName(e.target.value);
+                        setCelodevName(e.target.value);
                       }}
-                      value={employeeName}
+                      value={celodevName}
                       required
                       type='text'
                       className='w-full bg-gray-200 p-2 mt-2 mb-3'
                     />
                   </div>
                   <div>
-                    <label className='text-black'>
-                      Employee Wallet Address
-                    </label>
+                    <label className='text-black'>Celodev Wallet Address</label>
                     <input
                       onChange={(e) => {
-                        setEmployeeWalletAddress(e.target.value);
+                        setCelodevWalletAddress(e.target.value);
                       }}
-                      value={employeeWalletAddress}
+                      value={celodevWalletAddress}
                       required
                       type='text'
                       className='w-full bg-gray-200 p-2 mt-2 mb-3'
                     />
                   </div>
                   <div className='flex flex-col space-y-1'>
-                    <label className='text-black'>
-                      Employee Payment Method
-                    </label>
+                    <label className='text-black'>Celodev Payment Method</label>
                     <select
-                      value={employeePaymentMethod}
+                      value={celodevPaymentCurrency}
                       onChange={(e) => {
-                        setEmployeePaymentMethod(e.target.value);
+                        setCelodevPaymentCurrency(e.target.value);
                       }}
                       className='py-2.5'
                     >
@@ -191,14 +201,27 @@ const EditEmployeeModal = ({ id, employee }: employeeProps) => {
                       <option value='celo'>Celo</option>
                     </select>
                   </div>
-
                   <div>
-                    <label className='text-black'>Employee Salary (cUSD)</label>
+                    <label className='text-black'>Task Description</label>
                     <input
                       onChange={(e) => {
-                        setEmployeeSalary(e.target.value);
+                        setCelodevTaskDescription(e.target.value);
                       }}
-                      value={employeeSalary}
+                      value={celodevTaskDescription}
+                      required
+                      type='text'
+                      className='w-full bg-gray-200 p-2 mt-2 mb-3'
+                    />
+                  </div>
+                  <div>
+                    <label className='text-black'>
+                      Celodev Reward Amount (cUSD)
+                    </label>
+                    <input
+                      onChange={(e) => {
+                        setCelodevRewardAmount(e.target.value);
+                      }}
+                      value={celodevRewardAmount}
                       required
                       type='number'
                       className='w-full bg-gray-200 p-2 mt-2 mb-3'
@@ -215,7 +238,7 @@ const EditEmployeeModal = ({ id, employee }: employeeProps) => {
                   </button>
                   <button
                     type='submit'
-                    disabled={!!loading || !isComplete || !editEmployee}
+                    disabled={!!loading || !isComplete || !editCelodev}
                     className='py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-700 mr-2'
                   >
                     {loading ? loading : 'Edit'}
@@ -230,4 +253,4 @@ const EditEmployeeModal = ({ id, employee }: employeeProps) => {
   );
 };
 
-export default EditEmployeeModal;
+export default EditCelodevModal;
