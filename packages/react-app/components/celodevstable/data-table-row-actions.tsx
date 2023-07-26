@@ -5,7 +5,7 @@ import { MoreHorizontal } from 'lucide-react';
 
 
 
-import { employeesSchema } from './data/schema';
+import { celodevsSchema } from './data/schema';
 import { Button } from '../ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu';
 
