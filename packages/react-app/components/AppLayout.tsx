@@ -21,18 +21,18 @@ const AppLayout = ({ children }: PropsWithChildren<{}>) => {
             <div className='mx-auto max-w-7xl sm:px-6 lg:px-8'>
               <div className='border-b border-neutral-700'>
                 <div className='flex h-16 items-center justify-between px-4 sm:px-0'>
-                  <div className='flex items-center'>
+                  <div className='flex items-center space-x-2 text-white'>
                     <Link href='/' className='flex-shrink-0'>
                       <Cube
                         className='h-8 w-8'
-                        color='white'
+                        color='#13AAA1'
                         weight='duotone'
                       />
                     </Link>
+                    <p className='text-[14px]'> CodeStream Rewards</p>
                   </div>
                   <div className=''>
                     <div className='ml-4 flex items-center md:ml-6'>
-                    
                       <div className='relative ml-3'>
                         <ConnectButton />
                       </div>

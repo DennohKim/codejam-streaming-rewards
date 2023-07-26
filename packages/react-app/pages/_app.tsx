@@ -1,5 +1,5 @@
 import type { AppProps } from "next/app";
-import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { lightTheme, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import celoGroups from "@celo/rainbowkit-celo/lists";
 import Layout from "../components/Layout";
@@ -38,7 +38,17 @@ const wagmiConfig = createConfig({
 function App({ Component, pageProps }: AppProps) {
     return (
       <WagmiConfig config={wagmiConfig}>
-        <RainbowKitProvider chains={chains} appInfo={appInfo} coolMode={true}>
+        <RainbowKitProvider
+          theme={lightTheme({
+            accentColor: '#13AAA1',
+            accentColorForeground: 'white',
+            borderRadius: 'medium',
+            overlayBlur: 'small',
+          })}
+          chains={chains}
+          appInfo={appInfo}
+          coolMode={true}
+        >
           <AppDataProvider>
             <Toaster position='top-center' />
             <Layout>
