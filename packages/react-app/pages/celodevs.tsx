@@ -33,7 +33,6 @@ const CelodevsPage: NextPage = () => {
   };
   // D
   return (
-    <div>
       <Layout>
         <Alerts
           error={error}
@@ -45,7 +44,6 @@ const CelodevsPage: NextPage = () => {
         <AddEmployeeModal />
         <EmployeeTable />
       </Layout>
-    </div>
   );
 };
 
