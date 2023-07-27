@@ -8,7 +8,7 @@ import MobileProfileNav from './MobileProfileNav';
 import Navigation from './Navigation';
 
 const navigation = [
-  { name: 'Overview', href: '/' },
+  { name: 'Overview', href: '/overview' },
   { name: 'Celo Devs', href: '/celodevs' },
 ];
 
@@ -29,7 +29,7 @@ const AppLayout = ({ children }: PropsWithChildren<{}>) => {
                         weight='duotone'
                       />
                     </Link>
-                    <p className='text-[14px]'> CodeStream Rewards</p>
+                    <p className='text-[14px]'> CeloDev Stream Rewards</p>
                   </div>
                   <div className=''>
                     <div className='ml-4 flex items-center md:ml-6'>

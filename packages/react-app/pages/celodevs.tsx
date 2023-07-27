@@ -8,6 +8,7 @@ import ErrorAlert from '@/components/alerts/ErrorAlert';
 import LoadingAlert from '@/components/alerts/LoadingAlert';
 import SuccessAlert from '@/components/alerts/SuccessAlert';
 import { NextPage } from 'next';
+import Layout from '@/components/Layout';
 
 // Alerts component
 const Alerts = ({ error, success, loading, clear }: any) => {
@@ -33,10 +34,17 @@ const CelodevsPage: NextPage = () => {
   // D
   return (
     <div>
-      <Alerts error={error} success={success} loading={loading} clear={clear} />
+      <Layout>
+        <Alerts
+          error={error}
+          success={success}
+          loading={loading}
+          clear={clear}
+        />
 
-      <AddEmployeeModal />
-      <EmployeeTable />
+        <AddEmployeeModal />
+        <EmployeeTable />
+      </Layout>
     </div>
   );
 };

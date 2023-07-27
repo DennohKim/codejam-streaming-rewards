@@ -51,9 +51,7 @@ function App({ Component, pageProps }: AppProps) {
         >
           <AppDataProvider>
             <Toaster position='top-center' />
-            <Layout>
               <Component {...pageProps} />
-            </Layout>
           </AppDataProvider>
         </RainbowKitProvider>
       </WagmiConfig>
