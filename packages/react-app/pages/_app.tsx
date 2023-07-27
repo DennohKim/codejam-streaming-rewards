@@ -14,7 +14,7 @@ import AppDataProvider from "@/providers/AppDataProvider";
 const projectId = process.env.NEXT_PUBLIC_WC_PROJECT_ID as string; // get one at https://cloud.walletconnect.com/app
 
 const { chains, publicClient } = configureChains(
-    [Celo],
+    [Celo, Alfajores],
     [publicProvider()]
 );
 

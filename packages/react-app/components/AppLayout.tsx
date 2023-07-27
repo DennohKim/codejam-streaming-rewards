@@ -29,7 +29,7 @@ const AppLayout = ({ children }: PropsWithChildren<{}>) => {
                         weight='duotone'
                       />
                     </Link>
-                    <p className='text-[14px]'> CeloDev Stream Rewards</p>
+                    <p className='text-[14px]'> CeloDev Stream</p>
                   </div>
                   <div className=''>
                     <div className='ml-4 flex items-center md:ml-6'>
