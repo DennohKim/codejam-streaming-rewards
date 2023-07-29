@@ -172,12 +172,14 @@ const SendFundsModal = ({ id, celodev }: celodevProps) => {
                   <p>Your flow will be equal to:</p>
                   <p>
                     <b>${flowRateDisplay !== ' ' ? flowRateDisplay : 0}</b>{' '}
-                    cusdx/                    <span>
+                    cusdx/{' '}
+                    <span>
                       <select name='stream' id='stream'>
                         <option value='second'>second</option>
                         <option value='minute'>minute</option>
-                        <option value='daily'>daily</option>
-                        <option value='weekly'>weekly</option>
+                        <option value='daily'>day</option>
+                        <option value='weekly'>week</option>
+                        <option value='month'>month</option>
                       </select>
                     </span>
                   </p>
