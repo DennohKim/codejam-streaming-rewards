@@ -32,7 +32,6 @@ const SendFundsModal = ({ id, celodev }: celodevProps) => {
   const [recipient, setRecipient] = useState(celodev.walletAddress);
   const [rewardAmount, setRewardAmount] = useState(celodev.rewardAmount);
 
-
   async function createNewFlow(recipient: string, flowRate: string) {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     await provider.send('eth_requestAccounts', []);
@@ -173,7 +172,14 @@ const SendFundsModal = ({ id, celodev }: celodevProps) => {
                   <p>Your flow will be equal to:</p>
                   <p>
                     <b>${flowRateDisplay !== ' ' ? flowRateDisplay : 0}</b>{' '}
-                    cusdx/month
+                    cusdx/                    <span>
+                      <select name='stream' id='stream'>
+                        <option value='second'>second</option>
+                        <option value='minute'>minute</option>
+                        <option value='daily'>daily</option>
+                        <option value='weekly'>weekly</option>
+                      </select>
+                    </span>
                   </p>
                 </div>
               </div>
