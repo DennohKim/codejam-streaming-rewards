@@ -81,7 +81,7 @@ const AddCelodevModal = () => {
       });
 	    setTimeout(() => {
         router.refresh()
-      }, 7000);
+      }, 10000);
 
 
     } catch (e: any) {
@@ -129,7 +129,7 @@ const AddCelodevModal = () => {
                 >
                   <div className='bg-white flex flex-col space-y-3 px-4 pt-5 pb-4 sm:p-6 sm:pb-4'>
                     <div>
-                      <label>Celodev Name</label>
+                      <label>Celodev Team/Individual Name</label>
                       <input
                         onChange={(e) => {
                           setCelodevName(e.target.value);
@@ -164,7 +164,6 @@ const AddCelodevModal = () => {
                           Select token
                         </option>
                         <option value='cusd'>cUSD</option>
-                        <option value='celo'>Celo</option>
                       </select>
                     </div>
                     <div>
@@ -202,7 +201,7 @@ const AddCelodevModal = () => {
                     <button
                       type='submit'
                       disabled={!!loading || !isComplete || !createCelodev}
-                      className='py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-700 mr-2'
+                      className='py-2 px-4 bg-primary text-white rounded hover:primary mr-2'
                     >
                       {loading ? loading : 'Create'}
                     </button>

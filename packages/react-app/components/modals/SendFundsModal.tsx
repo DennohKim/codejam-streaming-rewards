@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { ethers } from 'ethers';
 import { toast } from 'react-hot-toast';
+import Lottie, { LottieRefCurrentProps } from 'lottie-react';
 
 import { Button } from '../ui/button';
 import { Framework } from '@superfluid-finance/sdk-core';
 import { useAccount } from 'wagmi';
+import { truncateAddr } from '@/lib/utils';
+import animationData from '@/assets/animation_lkpdlpmd.json';
 
 interface celodevProps {
   id: number;
@@ -25,14 +28,20 @@ declare global {
   }
 }
 
+const style = {
+  height: 150,
+};
+
 const SendFundsModal = ({ id, celodev }: celodevProps) => {
   const [visible, setVisible] = useState(false);
   const { address } = useAccount();
 
   const [flowRateDisplay, setFlowRateDisplay] = useState('');
   const [flowRate, setFlowRate] = useState('');
+  const [showInfoModal, setShowInfoModal] = useState(false);
   const [recipient, setRecipient] = useState(celodev.walletAddress);
   const [rewardAmount, setRewardAmount] = useState(celodev.rewardAmount);
+  const streamingRef = useRef<LottieRefCurrentProps>(null);
 
   async function createNewFlow(recipient: string, flowRate: string) {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -40,12 +49,11 @@ const SendFundsModal = ({ id, celodev }: celodevProps) => {
     const signer = provider.getSigner();
 
     const sf = await Framework.create({
-      chainId: 42220,
+      chainId: 11155111,
       provider: provider,
     });
     const superSigner = sf.createSigner({ signer: signer });
-    const cusdx = await sf.loadSuperToken('cUSDx');
-
+    const cusdx = await sf.loadSuperToken('ETHx');
 
     try {
       const createFlowOperation = cusdx.createFlow({
@@ -53,7 +61,6 @@ const SendFundsModal = ({ id, celodev }: celodevProps) => {
         receiver: recipient,
         flowRate: flowRate,
       });
-
 
       console.log(createFlowOperation);
       toast('Creating your stream...');
@@ -65,6 +72,10 @@ const SendFundsModal = ({ id, celodev }: celodevProps) => {
         `Congrats - you've just created a money stream!
     `
       );
+
+      setVisible(false);
+      setFlowRate('');
+      setShowInfoModal(true);
     } catch (error) {
       console.log('Error: ', error);
       toast.error(`Error: ${error}`);
@@ -152,15 +163,7 @@ const SendFundsModal = ({ id, celodev }: celodevProps) => {
                     placeholder='Enter a flowRate in wei/second'
                     className='text-black rounded-md border-2 border-secondary py-2  px-2 w-3/4'
                   />
-                  <Button
-                    className='px-8 py-2 rounded-md text-white mt-4 hover:bg-[#0c7277]'
-                    onClick={() => {
-                      createNewFlow(recipient, flowRate);
-                    }}
-                    variant='secondary'
-                  >
-                    Click to Create Your Stream
-                  </Button>
+
                   <a
                     className='mt-4 text-green-400'
                     href='https://app.superfluid.finance/'
@@ -178,11 +181,73 @@ const SendFundsModal = ({ id, celodev }: celodevProps) => {
                   </p>
                 </div>
               </div>
-              <div className='bg-gray-200 px-4 py-3 text-right'>
+              <div className='bg-gray-200 flex space-x-3 items-center justify-end px-4 py-3 '>
                 <button
                   type='button'
                   className='py-2 px-4 bg-red-500 text-white rounded hover:bg-gray-700 mr-2'
                   onClick={() => setVisible(false)}
+                >
+                  Cancel
+                </button>
+                <Button
+                  className='px-8 py-2 rounded-md text-white hover:bg-[#0c7277]'
+                  onClick={() => {
+                    createNewFlow(recipient, flowRate);
+                  }}
+                  variant='secondary'
+                >
+                  Click to Create Your Stream
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showInfoModal && (
+        <div
+          className='fixed z-40 overflow-y-auto top-0 w-full left-0'
+          id='modal'
+        >
+          <div className='flex items-center justify-center min-height-100vh pt-4 px-4 pb-20 text-center sm:block sm:p-0'>
+            <div className='fixed inset-0 transition-opacity'>
+              <div className='absolute inset-0 bg-gray-900 opacity-75' />
+            </div>
+            <span className='hidden sm:inline-block sm:align-middle sm:h-screen'>
+              &#8203;
+            </span>
+            <div
+              className='inline-block align-center bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full'
+              role='dialog'
+              aria-modal='true'
+              aria-labelledby='modal-headline'
+            >
+              <div className='flex flex-col justify-center items-center my-10'>
+                <p className='font-semibold text-lg p-4'>
+                  Your funds are being streamed to{' '}
+                  {truncateAddr(celodev.walletAddress)}😃
+                </p>
+                <Lottie
+                  onComplete={() => {
+                  }}
+                  lottieRef={streamingRef}
+                  animationData={animationData}
+				  style={style}
+                />
+                <a
+                  className='mt-4 px-8 py-2 rounded-md text-white bg-primary hover:bg-[#0c7277]'
+                  href='https://app.superfluid.finance/'
+                  target='_blank'
+                  rel='no-opener'
+                >
+                  View Superfluid Dashboard
+                </a>
+              </div>
+              <div className='bg-gray-200 flex space-x-3 items-center justify-end px-4 py-3 '>
+                <button
+                  type='button'
+                  className='py-2 px-4 bg-red-500 text-white rounded hover:bg-gray-700 mr-2'
+                  onClick={() => setShowInfoModal(false)}
                 >
                   Cancel
                 </button>

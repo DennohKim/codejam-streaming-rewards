@@ -16,9 +16,9 @@ import celodevsAbi from '@/abi/CelodevsDetails.json';
 // export const celodevsDetailsAbi = celodevsAbi.abi;
 
 //Sepolia
-// export const celodevsContract = '0x645ABd1a78229435fEbE1422e748f16D0B075166';
-// export const celodevsDetailsAbi = celodevsAbi.abi;
-
-//Sepolia
-export const celodevsContract = '0x5df75C8C7B80d11ed2C2bC766d0177cb64f25E30';
+export const celodevsContract = '0x287ed804Aa7239853cb26362cE2b096464D3be64';
 export const celodevsDetailsAbi = celodevsAbi.abi;
+
+//Mainnet
+// export const celodevsContract = '0x5df75C8C7B80d11ed2C2bC766d0177cb64f25E30';
+// export const celodevsDetailsAbi = celodevsAbi.abi;
