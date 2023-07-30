@@ -11,14 +11,11 @@ import celodevsAbi from '@/abi/CelodevsDetails.json';
 // export const employeeContract = '0xA29708995e1DF37E0e021901E609ad2f401AAF8A';
 // export const employeeDetailsAbi = employeeAbi.abi;
 
-//alfajores
-// export const celodevsContract = '0x19b68555839C65bD34455E52f24486f1dbf9fbEb';
-// export const celodevsDetailsAbi = celodevsAbi.abi;
 
 //Sepolia
-export const celodevsContract = '0x287ed804Aa7239853cb26362cE2b096464D3be64';
-export const celodevsDetailsAbi = celodevsAbi.abi;
+// export const celodevsContract = '0x287ed804Aa7239853cb26362cE2b096464D3be64';
+// export const celodevsDetailsAbi = celodevsAbi.abi;
 
 //Mainnet
-// export const celodevsContract = '0x5df75C8C7B80d11ed2C2bC766d0177cb64f25E30';
-// export const celodevsDetailsAbi = celodevsAbi.abi;
+export const celodevsContract = '0x5df75C8C7B80d11ed2C2bC766d0177cb64f25E30';
+export const celodevsDetailsAbi = celodevsAbi.abi;

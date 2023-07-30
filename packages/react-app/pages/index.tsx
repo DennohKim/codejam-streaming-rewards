@@ -3,6 +3,7 @@ import { Dialog } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { Cube } from '@phosphor-icons/react';
+import Image from 'next/image';
 
 
 export default function Home() {
@@ -83,9 +84,11 @@ export default function Home() {
       </header>
 
       <div className='relative isolate overflow-hidden pt-14'>
-        <img
+        <Image
           src='https://res.cloudinary.com/dqab6gg7d/image/upload/v1690474779/Fz8e2o6X0AAHWhB_oqwnoi_copy-2_ljbvf5.jpg'
           alt=''
+		  height={678}
+		  width={1155}
           className='absolute inset-0 -z-10 h-full w-full object-cover'
         />
         <div className='absolute inset-0 bg-secondary opacity-90'></div>

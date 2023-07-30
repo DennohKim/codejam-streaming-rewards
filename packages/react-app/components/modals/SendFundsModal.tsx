@@ -49,7 +49,7 @@ const SendFundsModal = ({ id, celodev }: celodevProps) => {
     const signer = provider.getSigner();
 
     const sf = await Framework.create({
-      chainId: 11155111,
+      chainId: 42220,
       provider: provider,
     });
     const superSigner = sf.createSigner({ signer: signer });
