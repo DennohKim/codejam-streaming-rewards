@@ -4,6 +4,7 @@ import { toast } from 'react-hot-toast';
 
 import { Button } from '../ui/button';
 import { Framework } from '@superfluid-finance/sdk-core';
+import { useAccount } from 'wagmi';
 
 interface celodevProps {
   id: number;
@@ -26,6 +27,7 @@ declare global {
 
 const SendFundsModal = ({ id, celodev }: celodevProps) => {
   const [visible, setVisible] = useState(false);
+  const { address } = useAccount();
 
   const [flowRateDisplay, setFlowRateDisplay] = useState('');
   const [flowRate, setFlowRate] = useState('');
@@ -38,13 +40,12 @@ const SendFundsModal = ({ id, celodev }: celodevProps) => {
     const signer = provider.getSigner();
 
     const sf = await Framework.create({
-      chainId: 44787,
+      chainId: 42220,
       provider: provider,
     });
     const superSigner = sf.createSigner({ signer: signer });
     const cusdx = await sf.loadSuperToken('cUSDx');
 
-    console.log(cusdx);
 
     try {
       const createFlowOperation = cusdx.createFlow({
@@ -52,6 +53,7 @@ const SendFundsModal = ({ id, celodev }: celodevProps) => {
         receiver: recipient,
         flowRate: flowRate,
       });
+
 
       console.log(createFlowOperation);
       toast('Creating your stream...');
@@ -172,16 +174,7 @@ const SendFundsModal = ({ id, celodev }: celodevProps) => {
                   <p>Your flow will be equal to:</p>
                   <p>
                     <b>${flowRateDisplay !== ' ' ? flowRateDisplay : 0}</b>{' '}
-                    cusdx/{' '}
-                    <span>
-                      <select name='stream' id='stream'>
-                        <option value='second'>second</option>
-                        <option value='minute'>minute</option>
-                        <option value='daily'>day</option>
-                        <option value='weekly'>week</option>
-                        <option value='month'>month</option>
-                      </select>
-                    </span>
+                    cusdx/month
                   </p>
                 </div>
               </div>

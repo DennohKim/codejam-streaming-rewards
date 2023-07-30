@@ -26,6 +26,7 @@ module.exports = {
         mnemonic: DEVCHAIN_MNEMONIC,
       },
     },
+	
     alfajores: {
       url: 'https://alfajores-forno.celo-testnet.org',
       accounts: [process.env.PRIVATE_KEY],
@@ -37,12 +38,12 @@ module.exports = {
       chainId: 42220,
     },
     sepolia: {
-      url: 'https://rpc.sepolia.org',
+      url: 'https://eth-sepolia.g.alchemy.com/v2/IFnr6GF0NeJvLjyYuuC4EwYl-BphZBy5',
       accounts: [process.env.PRIVATE_KEY],
-      chainId: 11155111,
+      //chainId: 11155111,
     },
     mumbai: {
-      url: 'https://rpc-mumbai.maticvigil.com',
+      url: `https://polygon-mumbai.infura.io/v3/${process.env.INFURA_API_KEY}`,
       accounts: [process.env.PRIVATE_KEY],
       chainId: 80001,
     },
