@@ -53,7 +53,7 @@ const SendFundsModal = ({ id, celodev }: celodevProps) => {
       provider: provider,
     });
     const superSigner = sf.createSigner({ signer: signer });
-    const cusdx = await sf.loadSuperToken('ETHx');
+    const cusdx = await sf.loadSuperToken('cUSDx');
 
     try {
       const createFlowOperation = cusdx.createFlow({
