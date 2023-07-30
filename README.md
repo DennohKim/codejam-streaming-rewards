@@ -1,11 +1,15 @@
-# CeloDev Stream Web App
-## By Dennis Kimathi 
+
+
+# CeloDev Stream Web App - Superfluid Wave Pool Hackathon
+## By Dennis Kimathi | Anthony Kimani
 
 ## Screenshot
  ![image](./app-screenshot.png)
 
+
  ## Table of Content
- - [Description](#description)
+ - [Demo Video](#demo-video)
+ - [Pitch Deck](#pitch-deck)
  - [Features](#features)
  - [Requirements](#requirements)
  - [Installation Process](#installation-Process)
@@ -15,16 +19,20 @@
  - [Authors Info](#Authors-Info)
 
 
-## Description
-<p>CeloDev Stream Web app</p>
+## Demo video
+
+https://github.com/DennohKim/Celo-Code-Jam-3.0/assets/63696529/19df3d56-75d6-40f8-925e-aebc27eca585
 
 [Go Back to the top](#CeloDev-Stream-Web-app)
+
+## Pitch Deck
+
+- [Presentation](https://www.canva.com/design/DAFqAIn-oz0/hwpLK41Org9InJtID-Fevg/edit?utm_content=DAFqAIn-oz0&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
+
 ## Features
 1. As a user, I want to create, update and delete developer details so that I can stream funds to their wallet address.
 2. As a user, I want to send cUSD to a developer using superfluid.
 
-
-[Go Back to the top](#CeloDev-Stream-Web-app)
 
  ###  Requirements
  * Access to  a computer 
@@ -37,7 +45,6 @@
 * Run `yarn react-app:dev` to launch the app
 
  ****
- [Go Back to the top](#CeloDev-Stream-Web-app)
 
 ### Live Link
 - Click this link to view the live application https://codejam-streaming-rewards-react-app.vercel.app/
@@ -54,14 +61,10 @@ Celo Composer is built on Celo to make it simple to build dApps using a variety 
 - [React.js](https://reactjs.org/)
 - [Shadcn UI](https://ui.shadcn.com/)
 - [Rainbowkit-celo](https://github.com/celo-org/rainbowkit-celo)
-
 - [Superfluid-finance](https://www.superfluid.finance/)
 
 Superfluid is a revolutionary asset streaming protocol that brings subscriptions, salaries, vesting, and rewards to DAOs and crypto-native businesses worldwide.
 
-
-
-[Go Back to the top](#CeloDev-Stream-Web-app)
 
 
 ## License
@@ -82,11 +85,13 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-[Go Back to the top](#CeloDev-Stream-Web-app)
 
 ## Authors Info
-Contributors - [Dennis Kimathi](https://github.com/DennohKim)
 
+Contributors  
+- [Dennis Kimathi](https://github.com/DennohKim)
+- [Anthony Kimani](https://github.com/anthonykimani)
 
+ 
 
 [Go Back to the top](#CeloDev-Stream-Web-app)
