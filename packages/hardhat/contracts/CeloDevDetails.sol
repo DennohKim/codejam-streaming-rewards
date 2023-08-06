@@ -154,7 +154,7 @@ contract CelodevsDetails {
         emit CelodevDetailsDeleted(msg.sender, _index);
     }
 
-    function getNumberOfCelodevs() external view returns (uint256) {
-        return userCelodevCount[msg.sender];
-    }
+   function getNumberOfCelodevs(address user) external view returns (uint256) {
+    return userCelodevCount[user];
+}
 }
