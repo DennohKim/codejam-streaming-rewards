@@ -1,178 +1,67 @@
-import { useContractCall } from '@/hooks/contracts/useContractRead'
-import columns from './columns'
-import { DataTable } from './data-table'
-import { celodevsType } from './data/schema'
-import { useAppData } from '@/providers/AppDataProvider'
+import { useContractCall } from '@/hooks/contracts/useContractRead';
+import columns from './columns';
+import { DataTable } from './data-table';
+import { celodevsType } from './data/schema';
+import { useAppData } from '@/providers/AppDataProvider';
+import { iCelodevsDetails } from '@/typings';
+import { useCallback, useEffect, useState } from 'react';
+import { useAccount, useContractRead } from 'wagmi';
+import { celodevsContract, celodevsDetailsAbi } from '@/constants/constants';
 
-const employeeData: celodevsType[] = [
-//   {
-//     index: 1,
-//     owner: '0xce7Ff9D05dD37DD1C86364670c18d92561549954',
-//     employee_name: 'Chizaa',
-//     address: '0xce7Ff9D05dD37DD1C86364670c18d92561549954',
-//     payment_method: 'cUSD',
-//     employee_salary: 3,
-//     date: '20 Jan 2022, 09.00 PM',
-//   },
-//   {
-//     index: 1,
-//     employee_name: 'Chizaa',
-//     owner: '0xce7Ff9D05dD37DD1C86364670c18d92561549954',
-//     address: '0xce7Ff9D05dD37DD1C86364670c18d92561549954',
-//     payment_method: 'cUSD',
-//     employee_salary: 3,
+interface employeeTableProps {
+  id: number;
+}
 
-//     date: '20 Jan 2022, 09.00 PM',
-//   },
-//   {
-//     index: 2,
-//     owner: '0xce7Ff9D05dD37DD1C86364670c18d92561549954',
+export default function EmployeeTable({ id }: employeeTableProps) {
+ const { address } = useAccount();
+ const {
+   data: rawProduct,
+   isError,
+   isLoading,
+ }: any = useContractRead({
+   address: celodevsContract,
+   abi: celodevsDetailsAbi,
+   functionName: 'getCelodevDetails',
+   args: [id, address],
+   onError(error) {
+     console.log('Error', error);
+   },
+ });
 
-//     employee_name: 'Chizaa',
-//     address: '0xce7Ff9D05dD37DD1C86364670c18d92561549954',
-//     payment_method: 'cUSD',
-//     employee_salary: 3,
+ console.log(rawProduct);
 
-//     date: '20 Jan 2022, 09.00 PM',
-//   },
-//   {
-//     index: 3,
-//     owner: '0xce7Ff9D05dD37DD1C86364670c18d92561549954',
+ const [celodevsDetails, setCelodevsDetails] =
+   useState<iCelodevsDetails | null>();
 
-//     employee_name: 'Chizaa',
-//     address: '0xce7Ff9D05dD37DD1C86364670c18d92561549954',
-//     payment_method: 'cUSD',
-//     employee_salary: 3,
+ // Format the product data that we read from the smart contract
+ const getFormatProduct = useCallback(() => {
+   if (!rawProduct) return null;
+   setCelodevsDetails({
+     index: id,
+     owner: rawProduct[0],
+     name: rawProduct[1],
+     walletAddress: rawProduct[2],
+     paymentCurrency: rawProduct[3],
+     taskDescription: rawProduct[4],
+     rewardAmount: rawProduct[5],
+     dateCaptured: rawProduct[6],
+   });
+ }, [rawProduct, id]);
 
-//     date: '20 Jan 2022, 09.00 PM',
-//   },
-//   {
-//     index: 4,
-//     owner: '0xce7Ff9D05dD37DD1C86364670c18d92561549954',
+ console.log(celodevsDetails);
 
-//     employee_name: 'Chizaa',
-//     address: '0xce7Ff9D05dD37DD1C86364670c18d92561549954',
-//     payment_method: 'cUSD',
-//     employee_salary: 3,
+ // Call the getFormatProduct function when the rawProduct state changes
+ useEffect(() => {
+   getFormatProduct();
+ }, [getFormatProduct]);
 
-//     date: '20 Jan 2022, 09.00 PM',
-//   },
-//   {
-//     index: 5,
-//     owner: '0xce7Ff9D05dD37DD1C86364670c18d92561549954',
-
-//     employee_name: 'Chizaa',
-//     address: '0xce7Ff9D05dD37DD1C86364670c18d92561549954',
-//     payment_method: 'cUSD',
-//     employee_salary: 3,
-
-//     date: '20 Jan 2022, 09.00 PM',
-//   },
-//   {
-//     index: 6,
-//     owner: '0xce7Ff9D05dD37DD1C86364670c18d92561549954',
-
-//     employee_name: 'Chizaa',
-//     address: '0xce7Ff9D05dD37DD1C86364670c18d92561549954',
-//     payment_method: 'cUSD',
-//     employee_salary: 3,
-
-//     date: '20 Jan 2022, 09.00 PM',
-//   },
-//   {
-//     index: 7,
-//     owner: '0xce7Ff9D05dD37DD1C86364670c18d92561549954',
-
-//     employee_name: 'Chizaa',
-//     address: '0xce7Ff9D05dD37DD1C86364670c18d92561549954',
-//     payment_method: 'cUSD',
-//     employee_salary: 3,
-
-//     date: '20 Jan 2022, 09.00 PM',
-//   },
-//   {
-//     index: 8,
-//     owner: '0xce7Ff9D05dD37DD1C86364670c18d92561549954',
-
-//     employee_name: 'Chizaa',
-//     address: '0xce7Ff9D05dD37DD1C86364670c18d92561549954',
-//     payment_method: 'cUSD',
-//     employee_salary: 3,
-
-//     date: '20 Jan 2022, 09.00 PM',
-//   },
-//   {
-//     index: 9,
-//     owner: '0xce7Ff9D05dD37DD1C86364670c18d92561549954',
-
-//     employee_name: 'Chizaa',
-//     address: '0xce7Ff9D05dD37DD1C86364670c18d92561549954',
-//     payment_method: 'cUSD',
-//     employee_salary: 3,
-
-//     date: '20 Jan 2022, 09.00 PM',
-//   },
-//   {
-//     index: 10,
-//     owner: '0xce7Ff9D05dD37DD1C86364670c18d92561549954',
-
-//     employee_name: 'Chizaa',
-//     address: '0xce7Ff9D05dD37DD1C86364670c18d92561549954',
-//     payment_method: 'cUSD',
-//     employee_salary: 3,
-
-//     date: '20 Jan 2022, 09.00 PM',
-//   },
-//   {
-//     index: 11,
-//     owner: '0xce7Ff9D05dD37DD1C86364670c18d92561549954',
-
-//     employee_name: 'Chizaa',
-//     address: '0xce7Ff9D05dD37DD1C86364670c18d92561549954',
-//     payment_method: 'cUSD',
-
-//     employee_salary: 3,
-
-//     date: '20 Jan 2022, 09.00 PM',
-//   },
-//   {
-//     index: 12,
-//     owner: '0xce7Ff9D05dD37DD1C86364670c18d92561549954',
-
-//     employee_name: 'Chizaa',
-//     address: '0xce7Ff9D05dD37DD1C86364670c18d92561549954',
-//     payment_method: 'cUSD',
-//     employee_salary: 3,
-
-//     date: '20 Jan 2022, 09.00 PM',
-//   },
-//   {
-//     index: 13,
-//     owner: '0xce7Ff9D05dD37DD1C86364670c18d92561549954',
-
-//     employee_name: 'Chizaa',
-//     address: '0xce7Ff9D05dD37DD1C86364670c18d92561549954',
-//     payment_method: 'cUSD',
-//     employee_salary: 3,
-
-//     date: '20 Jan 2022, 09.00 PM',
-//   },
- ];
+ // If the devs cannot be loaded, return null
+ if (!celodevsDetails) return null;
 
 
-
-
-export default function EmployeeTable() {
-
-	//   const { data }: any = useContractCall('readProduct', [id], true)
-
-	const { celodevsDetails } = useAppData()
-	console.log(celodevsDetails)
-
-
-	return (
-		<div className="container mx-auto py-6">
-			<DataTable columns={columns} data={celodevsDetails} />
-		</div>
-	)
+  return (
+    <div className='container mx-auto py-6'>
+      <DataTable columns={columns} data={celodevsDetails} />
+    </div>
+  );
 }

@@ -21,5 +21,5 @@ import celodevsAbi from '@/abi/CelodevsDetails.json';
 // export const celodevsDetailsAbi = celodevsAbi.abi;
 
 //Alfajores
-export const celodevsContract = '0x6A18CE8045faF0491e94D757615aACE7e177BBC4';
+export const celodevsContract = '0x53cB0ADd88c917F403372DB77110C757B70bE19b';
 export const celodevsDetailsAbi = celodevsAbi.abi;
